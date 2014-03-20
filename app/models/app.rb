@@ -15,7 +15,7 @@ class App < ActiveRecord::Base
 
   before_create :generate_access_token
   
-  validates :access_token, presence: true, uniqueness: true
+  validates :access_token, uniqueness: true
   validates :name, presence: true, uniqueness: true
 
 private
