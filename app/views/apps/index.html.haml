@@ -1,0 +1,13 @@
+#apps
+  %div
+    %table
+      %tr
+        %th Application
+        %th Access Token
+        %th Actions
+      - @apps.each do |app|
+        %tr
+          %td= app.name
+          %td= app.access_token
+          %td= link_to "Delete", app_path(app), method: :delete
+    = link_to "New Application", new_app_path, class: :button

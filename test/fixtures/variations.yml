@@ -1,0 +1,20 @@
+# == Schema Information
+#
+# Table name: variations
+#
+#  id            :integer          not null, primary key
+#  name          :string(255)
+#  experiment_id :integer
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  experiment_id: 1
+
+two:
+  name: MyString
+  experiment_id: 1

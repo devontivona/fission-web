@@ -1,0 +1,12 @@
+#experiments
+  %div
+    %h2= @experiment.name
+    %table
+      %tbody
+        %tr
+          %th Variation
+          %th Clients
+        - @experiment.variations.each do |variation|
+          %tr{ data: { target: variation_path(variation) }}
+            %td= variation.name
+            %td= variation.clients.count

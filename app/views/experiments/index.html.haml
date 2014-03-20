@@ -1,0 +1,12 @@
+#experiments
+  %div
+    %table
+      %tr
+        %th Experiment
+        %th Application
+        %th Actions
+      - @experiments.each do |experiment|
+        %tr{ data: { target: experiment_path(experiment) }}
+          %td= experiment.name
+          %td= experiment.app.name
+          %td= link_to "Delete", experiment_path(experiment), method: :delete

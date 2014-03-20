@@ -1,0 +1,15 @@
+!!!
+%html
+  %head
+    %title Fission
+    = stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true
+    = csrf_meta_tags
+  %body
+    #header
+      %div
+        %h1 Fission
+        = link_to "Applications", apps_path, class: :button
+        = link_to "Experiments", experiments_path , class: :button
+        = link_to "Clients", clients_path , class: :button
+    = yield
+    = javascript_include_tag "application", "data-turbolinks-track" => true

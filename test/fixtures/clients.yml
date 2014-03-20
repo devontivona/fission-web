@@ -1,0 +1,39 @@
+# == Schema Information
+#
+# Table name: clients
+#
+#  id           :integer          not null, primary key
+#  library      :string(255)
+#  version      :string(255)
+#  manufacturer :string(255)
+#  os           :string(255)
+#  os_version   :string(255)
+#  model        :string(255)
+#  carrier      :string(255)
+#  token        :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  app_id       :integer
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  library: MyString
+  version: MyString
+  manufacturer: MyString
+  os: MyString
+  os_version: MyString
+  model: MyString
+  carrier: MyString
+  token: MyString
+
+two:
+  library: MyString
+  version: MyString
+  manufacturer: MyString
+  os: MyString
+  os_version: MyString
+  model: MyString
+  carrier: MyString
+  token: MyString

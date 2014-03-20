@@ -1,0 +1,62 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require_self
+ *= require_tree .
+ */
+
+$max: 120
+
+@import bourbon
+@import huxley
+@import verne
+
+#header 
+  @include container
+  @include scaffold-span(xs, 12)
+  text-align: center
+  padding: 
+    top: $rhythm * 4
+    bottom: $rhythm * 4
+
+#apps, #experiments, #clients, #client, #variation
+  @include container
+  @include scaffold-span(xs, 12)
+
+#apps-form
+  @include container
+  @include scaffold-span(xs, 12)
+
+#client
+  h2
+    margin-bottom: 0
+  div > p
+    margin-bottom: $rhythm * 5
+
+table
+  @extend %table
+
+.input
+  @extend %input
+
+.button, input[type=submit]
+  @extend %button
+  // TODO: Move this background directive into Verne
+  background: transparent
+  #header &
+    margin:
+      left: $rhythm
+      right: $rhythm
+
+table 
+  tr[data-target]:hover
+    td
+      background: rgba(0, 0, 0, 0.05)
+      color: inherit

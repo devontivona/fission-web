@@ -1,0 +1,10 @@
+#variation
+  %div
+    %h2= @variation.name
+    %table
+      %tbody
+        %tr
+          %th Client
+        - @variation.clients.each do |client|
+          %tr{ data: { target: client_path(client) }}
+            %td= client.name

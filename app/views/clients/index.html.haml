@@ -1,0 +1,12 @@
+#clients
+  %div
+    %table
+      %tr
+        %th Client
+        %th App
+        %th Actions
+      - @clients.each do |client|
+        %tr{ data: { target: client_path(client) }}
+          %td= client.name
+          %td= client.app.name
+          %td= link_to "Delete", client_path(client), method: :delete

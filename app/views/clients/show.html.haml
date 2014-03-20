@@ -1,0 +1,38 @@
+#client
+  %div
+    %h2= @client.model
+    %p= @client.token
+    %table
+      %tbody
+        %tr
+          %td Library
+          %td= @client.library
+        %tr
+          %td Library Version
+          %td= @client.version
+        %tr
+          %td Manufacturer
+          %td= @client.manufacturer
+        %tr
+          %td OS
+          %td= @client.os
+        %tr
+          %td OS Version
+          %td= @client.os_version
+        %tr
+          %td Model
+          %td= @client.model
+        %tr
+          %td Carrier
+          %td= @client.carrier
+    %table
+      %thead
+        %tr
+          %th Experiment
+          %th Variation
+      %tbody
+        - @client.variations.each do |variation|
+          %tr
+            %td= variation.experiment.name
+            %td= variation.name
+
