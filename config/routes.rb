@@ -9,6 +9,7 @@ Fission::Application.routes.draw do
   resources :variations
   resources :clients
   resources :assignments
+  resources :events
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
