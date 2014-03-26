@@ -31,6 +31,11 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.1.4)
+    cassandra (0.23.0)
+      json
+      rake
+      simple_uuid (~> 0.3)
+      thrift_client (~> 0.7, < 0.9)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
@@ -66,6 +71,7 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    kafka-rb (0.0.15)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -106,6 +112,7 @@ GEM
     simple_form (3.0.1)
       actionpack (>= 4.0.0, < 4.1)
       activemodel (>= 4.0.0, < 4.1)
+    simple_uuid (0.4.0)
     sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -118,6 +125,9 @@ GEM
     thor (0.18.1)
     thread_safe (0.2.0)
       atomic (>= 1.1.7, < 2)
+    thrift (0.8.0)
+    thrift_client (0.8.4)
+      thrift (~> 0.8.0)
     tilt (1.4.1)
     treetop (1.4.15)
       polyglot
@@ -138,12 +148,14 @@ PLATFORMS
 
 DEPENDENCIES
   bourbon
+  cassandra
   coffee-rails (~> 4.0.0)
   haml-rails
   huxley
   inherited_resources
   jbuilder (~> 1.2)
   jquery-rails
+  kafka-rb
   pg
   rails (= 4.0.2)
   sass-rails (~> 4.0.0)

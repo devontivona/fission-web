@@ -40,6 +40,10 @@ gem 'simple_form'
 gem 'haml-rails'
 gem 'inherited_resources'
 
+
+gem 'cassandra'
+gem 'kafka-rb'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
