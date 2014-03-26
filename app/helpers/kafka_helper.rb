@@ -5,9 +5,7 @@ module KafkaHelper
 
   class DistQueue   
     
-    def push(message)
-      @options[:topic] = @topic
-      
+    def push(message)     
       @producer = Kafka::Producer.new(@options) unless @producer
       @producer.push(Kafka::Message.new(message))
     end
@@ -15,6 +13,11 @@ module KafkaHelper
     def pop()
       @consumer = Kafka::consumer.new(@options) unless @consumer
 
+      @consumer.loop do |messages|
+        messages.each do |message|
+          yield message.payload
+        end
+      end
     end
 
   end
@@ -25,6 +28,7 @@ module KafkaHelper
     def initialize
       @topic = 'fission_events'
       @options = Rails.application.config.kafka
+      @options[:topic] = @topic
     end    
 
   end
