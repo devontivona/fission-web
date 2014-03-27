@@ -8,9 +8,8 @@ include KafkaHelper
 
 namespace :events do
 
-  def gen_events(app)
+  def gen_events(app, client)
 
-    client = app.clients.sample
     exp = app.experiments.sample
     var = exp.variations.sample
 
@@ -65,12 +64,14 @@ namespace :events do
   task :generate => :environment do
 
     app = App.first
-
     uri = URI.parse('http://localhost:3000/events')
 
-    headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8', 'Client-Token'=>'Simulator'}
+    headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8'}
     loop do
-      events = gen_events(app)
+      client = app.clients.sample
+      headers['Client-Token'] = client.token
+
+      events = gen_events(app, client)
       http = Net::HTTP.new(uri.host,uri.port)
       req = Net::HTTP::Post.new(uri.request_uri, headers)
       req.body = "events=#{events.to_json}"
@@ -82,26 +83,31 @@ namespace :events do
   end
 
 
-  desc "Consumes events"
+  desc "Check running Applications"
   task :consume => :environment do
-    # qevents = EventsQueue.new
-
-    # qevents.bpop() do |message|
-    #   puts "Received: #{message}"
-    #   # sleep(1.1)
-    # end
-
-    qevents = EventsQueue.new
-    cql = EventsColumnFamily.new
-
-    qevents.bpop() do |messages|
-      events = JSON.parse(messages, {symbolize_names: true})
-      events.each do |event|
-        cql.insert(event)
-      end
-      sleep(1.1)
-    end
+    Resque.enqueue(ConsumeEvents, {})
   end
+
+  # desc "Consumes events"
+  # task :consume => :environment do
+  #   # qevents = EventsQueue.new
+
+  #   # qevents.bpop() do |message|
+  #   #   puts "Received: #{message}"
+  #   #   # sleep(1.1)
+  #   # end
+
+  #   qevents = EventsQueue.new
+  #   cql = EventsColumnFamily.new
+
+  #   qevents.bpop() do |messages|
+  #     events = JSON.parse(messages, {symbolize_names: true})
+  #     events.each do |event|
+  #       cql.insert(event)
+  #     end
+  #     sleep(1.1)
+  #   end
+  # end
 
   desc "Produce events"
   task :produce => :environment do
