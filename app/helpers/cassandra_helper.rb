@@ -19,16 +19,16 @@ module CassandraHelper
 
     def prepare
       if @client
-      # @statement = $cql_db.prepare("insert into #{column_family} (id, animal, fruit, rnumber) values (?,?,?,?)")
       @statement = @client.prepare(
         %{INSERT INTO #{@keyspace}.#{@column_family} (
-          id, created_at, body, status, app_id, app_name,
+          id, created_at, dbucket, hbucket, mbucket,
+          body, status, app_id, app_name,
           app_access_token, app_created_at, client_id,
           client_library, client_version, client_manufacturer,
           client_os, client_os_version, client_model,
           client_carrier, client_token, client_created_at, 
           experiment_id, experiment_name, variation_id, variation_name
-        ) VALUES (now(),dateof(now()),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
+        ) VALUES (now(),dateof(now()),?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
       )
       else
         raise 'Cassandra client is Nil'
@@ -38,6 +38,7 @@ module CassandraHelper
     def insert(record)
       if @statement and record
         @statement.execute(
+          record[:dbucket], record[:hbucket], record[:mbucket],
           record[:body], record[:status], record[:app_id], record[:app_name],
           record[:app_access_token], record[:app_created_at], record[:client_id],
           record[:client_library], record[:client_version], record[:client_manufacturer],

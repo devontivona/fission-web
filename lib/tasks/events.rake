@@ -24,13 +24,15 @@ namespace :events do
     }
     sampler = WeightedRandomizer.new(weights)
     event_path = samples[sampler.sample]
-    # print "#{event_path}\n"
 
     events = []
     event_path.each do |item|
       event = {}
       event[:body] = item[0]
       event[:status] = item[1]
+      event[:dbucket] = Time.now.getutc.strftime "%Y-%m-%d"
+      event[:hbucket] = Time.now.getutc.strftime "%Y-%m-%d-%H"
+      event[:mbucket] = Time.now.getutc.strftime "%Y-%m-%d-%H-%M"
 
       event[:app_id] = app.id
       event[:app_name] = app.name
