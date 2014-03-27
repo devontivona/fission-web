@@ -15,12 +15,12 @@ namespace :events do
 
     weights = {a:25, b:30, c:25, d:5, e:10, f: 5}
     samples = {
-      a: [['open',:success], ['login',:success], ['close',:success]],
-      b: [['open',:success], ['login',:success], ['browse',:success], ['browse',:success], ['close',:success]],
-      c: [['open',:success], ['login',:success], ['browse',:success], ['close',:success]],
-      d: [['open',:success], ['login',:success], ['app_crash',:error]],
-      e: [['open',:success], ['login',:success], ['add_to_cart',:success], ['close',:success]],
-      f: [['open',:success], ['app_crash',:error]]
+      a: [['open',:info], ['login',:info], ['close',:info]],
+      b: [['open',:info], ['login',:info], ['browse',:info], ['browse',:info], ['close',:info]],
+      c: [['open',:info], ['login',:info], ['browse',:info], ['close',:info]],
+      d: [['open',:info], ['login',:info], ['app_crash',:error]],
+      e: [['open',:info], ['login',:info], ['add_to_cart',:info], ['close',:info]],
+      f: [['open',:info], ['app_crash',:error]]
     }
     sampler = WeightedRandomizer.new(weights)
     event_path = samples[sampler.sample]
