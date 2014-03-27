@@ -1,5 +1,3 @@
-# require 'singleton'
-
 module KafkaHelper
 
   # To start Kafka with Topic "fission.events"
