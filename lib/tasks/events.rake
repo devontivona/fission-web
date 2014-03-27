@@ -1,5 +1,8 @@
 require 'net/http'
 
+require "#{Rails.root}/app/helpers/kafka_helper"
+include KafkaHelper
+
 namespace :events do
 
   desc "Generates new events"
@@ -22,7 +25,6 @@ namespace :events do
       req.body = "events=#{Random.rand}"
       res = http.request(req)
       puts "Response #{res.code} #{res.message}: #{res.body}"
-      # Net::HTTP.post_form(uri, initheader=headers, {events: data})
       sleep(1.0)
     end
 
@@ -32,6 +34,19 @@ namespace :events do
 
   desc "Consumes events"
   task :consume => :environment do
+
+  end
+
+  desc "Produce events"
+  task :produce => :environment do
+    qevents = EventsQueue.new
+
+    loop do
+      qevents.push("#{Random.rand}")
+      sleep(1.0)
+    end
+    
+
 
   end
 

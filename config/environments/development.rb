@@ -28,6 +28,6 @@ Fission::Application.configure do
   config.assets.debug = true
   
   # Kafka configuration
-  config.kafka = {host: '192.168.3.100', port: 9092}
+  config.kafka = {url: 'localhost:9092'}
   config.redis = {host: '192.168.3.100', port: 6379, thread_safe: true}
 end
