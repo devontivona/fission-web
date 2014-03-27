@@ -29,4 +29,5 @@ Fission::Application.configure do
   
   # Kafka configuration
   config.kafka = {host: '192.168.3.100', port: 9092}
+  config.redis = {host: '192.168.3.100', port: 6379, thread_safe: true}
 end

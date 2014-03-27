@@ -43,6 +43,7 @@ gem 'inherited_resources'
 
 gem 'cassandra'
 gem 'kafka-rb'
+gem 'resque'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
