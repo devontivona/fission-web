@@ -38,15 +38,16 @@ namespace :events do
     exp = app.experiments.sample
     var = exp.variations.sample
 
-    weights = {"0"=>25, "1"=>50, "2"=>5, "3"=>22}
-    samples = [
-      [['login',:success], ['logout',:success]],
-      [['login',:success], ['browse',:success], ['logout',:success]],
-      [['login',:success], ['app_crash',:error]],
-      [['login',:success], ['add_to_cart',:success], ['logout',:success]]
-    ]
+    weights = {a:25, b:30, c:25, d:5, e:15}
+    samples = {
+      a: [['login',:success], ['logout',:success]],
+      b: [['login',:success], ['browse',:success]],
+      c: [['login',:success], ['browse',:success], ['logout',:success]],
+      d: [['login',:success], ['app_crash',:error]],
+      e: [['login',:success], ['add_to_cart',:success], ['logout',:success]]
+    }
     sampler = WeightedRandomizer.new(weights)
-    event_path = samples[sampler.sample.to_i]
+    event_path = samples[sampler.sample]
     # print "#{event_path}\n"
 
     events = []
@@ -100,7 +101,6 @@ namespace :events do
       puts "Response #{res.code} #{res.message}: #{res.body}"
       sleep(1.0)
     end
-
 
   end
 

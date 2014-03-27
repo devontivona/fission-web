@@ -2,6 +2,7 @@
 
 module KafkaHelper
 
+  # To start Kafka with Topic "fission.events"
   # zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
   # kafka-server-start.sh /usr/local/kafka/config/server.properties
   # kafka-topics.sh --zookeeper localhost:2181 --create --topic fission.events --partitions 1 --replication-factor 1
