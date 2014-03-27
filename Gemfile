@@ -45,8 +45,9 @@ gem 'inherited_resources'
 gem 'cql-rb'
 gem 'kafka-rb'
 gem 'poseidon'
-gem 'resque'
+gem 'resque', require: 'resque/server'
 gem 'weighted_randomizer'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

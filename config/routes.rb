@@ -10,6 +10,8 @@ Fission::Application.routes.draw do
   resources :clients
   resources :assignments
   resources :events
+
+  mount Resque::Server, :at => "/resque"
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
