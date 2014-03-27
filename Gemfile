@@ -45,6 +45,7 @@ gem 'cassandra'
 gem 'kafka-rb'
 gem 'poseidon'
 gem 'resque'
+gem 'weighted_randomizer'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

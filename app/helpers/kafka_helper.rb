@@ -8,26 +8,21 @@ module KafkaHelper
 
   class DistQueue   
     
-    def push(message)  
-      
+    def push(message)        
       @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
 
-      # @producer = Kafka::Producer.new(@options) unless @producer
-      # @producer.push(Kafka::Message.new(message))
     end
 
-    def consume()
+    def bpop()
       uri = @options[:url].split(':')
       @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :earliest_offset)
-
-
-      # @consumer = Kafka::consumer.new(@options) unless @consumer
 
       loop do
         messages = @consumer.fetch
         messages.each do |message|
           yield message.value
         end
+        sleep(0.5)
       end
     end
 
