@@ -10,7 +10,7 @@ module KafkaHelper
     
     def push(message)  
       
-      @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
+      @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
 
       # @producer = Kafka::Producer.new(@options) unless @producer
       # @producer.push(Kafka::Message.new(message))
@@ -40,13 +40,6 @@ module KafkaHelper
       @topic = 'fission.events'
       @options = Rails.application.config.kafka
       @options[:topic] = @topic
-
-    end    
-
-    def connect
-      @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer')
-
-      
     end
 
   end
