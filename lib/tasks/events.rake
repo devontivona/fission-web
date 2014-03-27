@@ -34,7 +34,12 @@ namespace :events do
 
   desc "Consumes events"
   task :consume => :environment do
+    qevents = EventsQueue.new
 
+    qevents.consume() do |message|
+      puts "Received: #{message}"
+      sleep(1.1)
+    end
   end
 
   desc "Produce events"

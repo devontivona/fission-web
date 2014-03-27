@@ -9,19 +9,24 @@ module KafkaHelper
   class DistQueue   
     
     def push(message)  
-      @producer = Poseidon::Producer.new([@options[:url]], @topic)
+      
       @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
 
       # @producer = Kafka::Producer.new(@options) unless @producer
       # @producer.push(Kafka::Message.new(message))
     end
 
-    def pop()
-      @consumer = Kafka::consumer.new(@options) unless @consumer
+    def consume()
+      uri = @options[:url].split(':')
+      @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :earliest_offset)
 
-      @consumer.loop do |messages|
+
+      # @consumer = Kafka::consumer.new(@options) unless @consumer
+
+      loop do
+        messages = @consumer.fetch
         messages.each do |message|
-          yield message.payload
+          yield message.value
         end
       end
     end
@@ -35,7 +40,14 @@ module KafkaHelper
       @topic = 'fission.events'
       @options = Rails.application.config.kafka
       @options[:topic] = @topic
+
     end    
+
+    def connect
+      @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer')
+
+      
+    end
 
   end
 end
