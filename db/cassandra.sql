@@ -33,4 +33,4 @@ CREATE TABLE events(
   variation_name TEXT,
   PRIMARY KEY(app_id, id)
 
-) with clustering ORDER BY (id ASC);
+) WITH CLUSTERING ORDER BY (id ASC);

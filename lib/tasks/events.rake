@@ -2,35 +2,11 @@ require 'net/http'
 require 'json'
 
 require "#{Rails.root}/app/helpers/kafka_helper"
+require "#{Rails.root}/app/helpers/cassandra_helper"
+include CassandraHelper
 include KafkaHelper
 
 namespace :events do
-
-
-  # body TEXT,
-  # status TEXT,
-  
-  # app_id BIGINT,
-  # app_name TEXT,
-  # app_access_token TEXT,
-  # app_created_at TEXT,
-
-  # client_id BIGINT,
-  # client_library TEXT,
-  # client_version TEXT,
-  # client_manufacturer TEXT,
-  # client_os TEXT,
-  # client_os_version TEXT,
-  # client_model TEXT,
-  # client_carrier TEXT,
-  # client_token TEXT,
-  # client_created_at TEXT,
-
-  # experiment_id BIGINT,
-  # experiment_name TEXT,
-
-  # variation_id BIGINT,
-  # variation_name TEXT,
 
   def gen_events(app)
 
@@ -40,11 +16,11 @@ namespace :events do
 
     weights = {a:25, b:30, c:25, d:5, e:15}
     samples = {
-      a: [['login',:success], ['logout',:success]],
-      b: [['login',:success], ['browse',:success]],
-      c: [['login',:success], ['browse',:success], ['logout',:success]],
+      a: [['login',:success], ['close',:success]],
+      b: [['login',:success], ['browse',:success], ['browse',:success], ['close',:success]],
+      c: [['login',:success], ['browse',:success], ['close',:success]],
       d: [['login',:success], ['app_crash',:error]],
-      e: [['login',:success], ['add_to_cart',:success], ['logout',:success]]
+      e: [['login',:success], ['add_to_cart',:success], ['close',:success]]
     }
     sampler = WeightedRandomizer.new(weights)
     event_path = samples[sampler.sample]
@@ -107,11 +83,22 @@ namespace :events do
 
   desc "Consumes events"
   task :consume => :environment do
-    qevents = EventsQueue.new
+    # qevents = EventsQueue.new
 
-    qevents.bpop() do |message|
-      puts "Received: #{message}"
-      # sleep(1.1)
+    # qevents.bpop() do |message|
+    #   puts "Received: #{message}"
+    #   # sleep(1.1)
+    # end
+
+    qevents = EventsQueue.new
+    cql = EventsColumnFamily.new
+
+    qevents.bpop() do |messages|
+      events = JSON.parse(messages, {symbolize_names: true})
+      events.each do |event|
+        cql.insert(event)
+      end
+      sleep(1.1)
     end
   end
 

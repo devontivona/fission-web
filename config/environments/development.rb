@@ -29,5 +29,10 @@ Fission::Application.configure do
   
   # Kafka configuration
   config.kafka = {url: 'localhost:9092'}
+
+  # Cassandra configuration
+  config.cassandra = {hosts: ['192.168.3.100']}
+
+  # Redis configuration
   config.redis = {host: '192.168.3.100', port: 6379, thread_safe: true}
 end
