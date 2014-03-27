@@ -92,9 +92,10 @@ namespace :events do
 
     headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8', 'Client-Token'=>'Simulator'}
     loop do
+      events = gen_events(app)
       http = Net::HTTP.new(uri.host,uri.port)
       req = Net::HTTP::Post.new(uri.request_uri, headers)
-      req.body = "events=#{Random.rand}"
+      req.body = "events=#{events.to_json}"
       res = http.request(req)
       puts "Response #{res.code} #{res.message}: #{res.body}"
       sleep(1.0)
@@ -119,13 +120,9 @@ namespace :events do
     qevents = EventsQueue.new
 
     app = App.first
-
-
     loop do
       events = gen_events(app)
       qevents.push(events.to_json)
-      # qevents.push("#{Random.rand}")
-      # puts "Sent Events: #{Time.now.to_i}"
       sleep(1.0)
     end
   end

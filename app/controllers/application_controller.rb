@@ -13,6 +13,10 @@ private
     @client ||= Client.find_by_app_id_and_token current_app.id, request.headers["Client-Token"]
   end
 
+  def events_queue
+    @events_queue ||= EventQueue.new
+  end
+
   def restrict_access
     head :unauthorized unless current_app
   end
