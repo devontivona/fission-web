@@ -47,7 +47,7 @@ namespace :events do
     ]
     sampler = WeightedRandomizer.new(weights)
     event_path = samples[sampler.sample.to_i]
-    print "#{event_path}\n"
+    # print "#{event_path}\n"
 
     events = []
     event_path.each do |item|
@@ -86,11 +86,7 @@ namespace :events do
   desc "Generates new events"
   task :generate => :environment do
 
-
-    # [#<Client id: 1, library: "iOS", version: "0.1.0", manufacturer: "Apple", os: "iPhone OS", os_version: "7.1", model: "iPhone Simulator", carrier: nil, token: "Simulator", created_at: "2014-03-26 19:34:17", updated_at: "2014-03-26 19:34:17", app_id: 1>]>
-
     app = App.first
-    client = app.clients.first
 
     uri = URI.parse('http://localhost:3000/events')
 
@@ -114,7 +110,7 @@ namespace :events do
 
     qevents.bpop() do |message|
       puts "Received: #{message}"
-      sleep(1.1)
+      # sleep(1.1)
     end
   end
 
@@ -124,10 +120,12 @@ namespace :events do
 
     app = App.first
 
+
     loop do
-      # qevents.push("#{Random.rand}")
       events = gen_events(app)
-      puts JSON.pretty_generate(events)
+      qevents.push(events.to_json)
+      # qevents.push("#{Random.rand}")
+      # puts "Sent Events: #{Time.now.to_i}"
       sleep(1.0)
     end
   end

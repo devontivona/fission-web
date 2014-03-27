@@ -10,12 +10,12 @@ module KafkaHelper
     
     def push(message)        
       @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
-
+      @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
     end
 
     def bpop()
       uri = @options[:url].split(':')
-      @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :earliest_offset)
+      @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :latest_offset)
 
       loop do
         messages = @consumer.fetch
