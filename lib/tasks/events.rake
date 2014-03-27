@@ -14,13 +14,14 @@ namespace :events do
     exp = app.experiments.sample
     var = exp.variations.sample
 
-    weights = {a:25, b:30, c:25, d:5, e:15}
+    weights = {a:25, b:30, c:25, d:5, e:10, f: 5}
     samples = {
-      a: [['login',:success], ['close',:success]],
-      b: [['login',:success], ['browse',:success], ['browse',:success], ['close',:success]],
-      c: [['login',:success], ['browse',:success], ['close',:success]],
-      d: [['login',:success], ['app_crash',:error]],
-      e: [['login',:success], ['add_to_cart',:success], ['close',:success]]
+      a: [['open',:success], ['login',:success], ['close',:success]],
+      b: [['open',:success], ['login',:success], ['browse',:success], ['browse',:success], ['close',:success]],
+      c: [['open',:success], ['login',:success], ['browse',:success], ['close',:success]],
+      d: [['open',:success], ['login',:success], ['app_crash',:error]],
+      e: [['open',:success], ['login',:success], ['add_to_cart',:success], ['close',:success]],
+      f: [['open',:success], ['app_crash',:error]]
     }
     sampler = WeightedRandomizer.new(weights)
     event_path = samples[sampler.sample]
