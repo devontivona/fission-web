@@ -39,7 +39,17 @@ namespace :split do
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    ABTest.score(Variation.all)
+    experiment = Experiment.find 2
+
+    results = ABTest.score(experiment.variations,experiment.outcome)
+    experiment.best = results.best
+    experiment.base = results.base
+    experiment.worst = results.worst
+    experiment.choice = results.choice
+    experiment.save
+    results.variations.select(&:save)
+    
+    # puts ABTest.score(experiment.all, experiment.outcome)
 
     # puts VariationsColumnFamily.counts(Variation.first)
 

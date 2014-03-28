@@ -19,8 +19,15 @@ class ABTest
     probability ? probability.last : 0
   end
 
+  # # Alternative chosen when this experiment completed.
+  # def outcome
+  #   return unless @playground.collecting?
+  #   outcome = connection.ab_get_outcome(@id)
+  #   outcome && _alternatives[outcome]
+  # end
 
-  def self.score(alternatives, probability = 90)
+  def self.score(alternatives, outcome = nil, probability = 90)
+    puts probability
     alts = alternatives
     # sort by conversion rate to find second best and 2nd best
     sorted = alts.sort_by(&:measure)
@@ -46,8 +53,8 @@ class ABTest
     # best alternative is one with highest conversion rate (best shot).
     # choice alternative can only pick best if we have high probability (>90%).
     best = sorted.last if sorted.last.measure > 0.0
-    choice = outcome ? alts[outcome.id] : (best && best.probability >= probability ? best : nil)
-    Struct.new(:alts, :best, :base, :least, :choice, :method).new(alts, best, base, least, choice, :score)
+    choice = outcome ? outcome : (best && best.probability >= probability ? best : nil)
+    Struct.new(:variations, :best, :base, :worst, :choice, :method).new(alts, best, base, least, choice, :score)
   end
 
 end
