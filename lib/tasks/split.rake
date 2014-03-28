@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'ab_test'
 
 require "#{Rails.root}/app/helpers/cassandra_helper"
 include CassandraHelper
@@ -38,7 +39,9 @@ namespace :split do
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    puts VariationsColumnFamily.counts(Variation.first)
+    ABTest.score(Variation.all)
+
+    # puts VariationsColumnFamily.counts(Variation.first)
 
     # app = App.first
     # excf = VariationsColumnFamily.new

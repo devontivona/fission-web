@@ -31,6 +31,14 @@ class Variation < ActiveRecord::Base
     conversion_rate
   end
 
+  def <=>(other)
+    measure <=> other.measure
+  end
+
+  def ==(other)
+    other && self.id == other.id && self.experiment.id == other.experiment.id
+  end
+
   private 
 
   def conversion_rate

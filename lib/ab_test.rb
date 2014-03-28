@@ -15,12 +15,12 @@ class ABTest
 
   def self.probability(score)
     score = score.abs
-    probability = AbTest::Z_TO_PROBABILITY.find { |z,p| score >= z }
+    probability = ABTest::Z_TO_PROBABILITY.find { |z,p| score >= z }
     probability ? probability.last : 0
   end
 
 
-  def score(alternatives, probability = 90)
+  def self.score(alternatives, probability = 90)
     alts = alternatives
     # sort by conversion rate to find second best and 2nd best
     sorted = alts.sort_by(&:measure)
@@ -32,7 +32,7 @@ class ABTest
       p = alt.measure
       n = alt.participants
       alt.z_score = (p - pc) / ((p * (1-p)/n) + (pc * (1-pc)/nc)).abs ** 0.5
-      alt.probability = AbTest.probability(alt.z_score)
+      alt.probability = ABTest.probability(alt.z_score)
     end
     # difference is measured from least performant
     if least = sorted.find { |alt| alt.measure > 0 }
@@ -42,6 +42,7 @@ class ABTest
         end
       end
     end
+    # alts.select {|alt| puts "Diff: #{alt.difference}" }
     # best alternative is one with highest conversion rate (best shot).
     # choice alternative can only pick best if we have high probability (>90%).
     best = sorted.last if sorted.last.measure > 0.0
