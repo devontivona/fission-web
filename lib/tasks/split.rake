@@ -38,21 +38,23 @@ namespace :split do
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    app = App.first
-    excf = ExperimentsColumnFamily.new
-    query = {app_id:app.id}
-    app.experiments.each do |experiment|
-      experiment.variations.each do |variation|
+    puts ExperimentsColumnFamily.counts(Experiment.first)
 
-        query[:experiment_id] = experiment.id
-        query[:variation_id]  = variation.id
+    # app = App.first
+    # excf = ExperimentsColumnFamily.new
+    # query = {app_id:app.id}
+    # app.experiments.each do |experiment|
+    #   experiment.variations.each do |variation|
 
-        excf.select(query).each do |row|
-          puts row.inspect
-        end
+    #     query[:experiment_id] = experiment.id
+    #     query[:variation_id]  = variation.id
 
-      end
-    end
+    #     excf.select(query).each do |row|
+    #       puts row.inspect
+    #     end
+
+    #   end
+    # end
   
   end
 

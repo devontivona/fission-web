@@ -45,6 +45,27 @@ module CassandraHelper
       end
     end
 
+    def self.counts(experiment)
+
+      excf = ExperimentsColumnFamily.new
+      query = {
+        app_id:experiment.app.id,
+        experiment_id: experiment.id
+      }
+      
+      counts = {total_count: 0, success_count: 0}
+      experiment.variations.each do |variation|
+
+        query[:variation_id]  = variation.id
+        excf.select(query).each do |row|
+          counts[:total_count]   += row['total_count']
+          counts[:success_count] += row['success_count']
+        end
+      end
+
+      counts
+    end
+
     def select(record)
       if @select_statement
         return @select_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
