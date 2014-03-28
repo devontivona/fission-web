@@ -19,14 +19,7 @@ class ABTest
     probability ? probability.last : 0
   end
 
-  # def outcome_is(alternatives, rate=0.8)
-  #   a, b = alternatives
-  #   @outcome_is = b.conversion_rate >= rate * a.conversion_rate ? b : a
-  # end
-
-  def self.score(alternatives, outcome = nil, probability = 90)
-    puts probability
-    alts = alternatives
+  def self.score(alts, outcome = nil, probability = 90)
     # sort by conversion rate to find second best and 2nd best
     sorted = alts.sort_by(&:measure)
     base = sorted[-2]
@@ -36,7 +29,15 @@ class ABTest
     alts.each do |alt|
       p = alt.measure
       n = alt.participants
-      alt.z_score = (p - pc) / ((p * (1-p)/n) + (pc * (1-pc)/nc)).abs ** 0.5
+      
+      # Need to check to see if there is any values
+      # before computing Zscore
+      if p == 0.0 or n == 0
+        alt.z_score = 0
+      else
+        alt.z_score = (p - pc) / ((p * (1-p)/n) + (pc * (1-pc)/nc)).abs ** 0.5
+      end
+      
       alt.probability = ABTest.probability(alt.z_score)
     end
     # difference is measured from least performant
@@ -57,19 +58,9 @@ class ABTest
 
   def complete!(alternatives, outcome = nil)
     unless outcome
-      # if outcome_is
-      #   begin
-      #     result = outcome_is(alternatives)
-      #     outcome = result.id
-      #   rescue
-      #     warn "Error in AbTest#complete!: #{$!}"
-      #   end
-      # else
-        best = score(alternatives, outcome).best
-        outcome = best.id if best
-      # end
+      best = score(alternatives, outcome).best
+      outcome = best.id if best
     end
-
     outcome
   end
 
