@@ -10,8 +10,8 @@ CREATE TABLE variations(
   experiment_id BIGINT,
   variation_id BIGINT,
 
-  success COUNTER,
-  total COUNTER,
+  success_count COUNTER,
+  total_count COUNTER,
 
   PRIMARY KEY(app_id, experiment_id, variation_id)
 );

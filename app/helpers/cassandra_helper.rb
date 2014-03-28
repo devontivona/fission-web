@@ -26,12 +26,12 @@ module CassandraHelper
 
       if @client
       @success_statement = @client.prepare(%{
-        UPDATE #{@keyspace}.#{@column_family} (
+        UPDATE #{@keyspace}.#{@column_family}
           SET total_count = total_count + 1, success_count = success_count + 1
           WHERE app_id=? AND experiment_id=? AND variation_id=?
       })
       @fail_statement = @client.prepare(%{
-        UPDATE #{@keyspace}.#{@column_family} (
+        UPDATE #{@keyspace}.#{@column_family}
           SET total_count = total_count + 1
           WHERE app_id=? AND experiment_id=? AND variation_id=?
       })
@@ -40,12 +40,12 @@ module CassandraHelper
       end
     end
 
-    def insert_success
+    def insert_success(record)
       if @success_statement
         @success_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
       end
     end
-    def insert_fail
+    def insert_fail(record)
       if @fail_statement
         @fail_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
       end
