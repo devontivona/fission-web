@@ -11,35 +11,38 @@ namespace :split do
   desc "Check running Applications"
   task :generate => :environment do
 
+    cql = VariationsColumnFamily.new
+
     app = App.first
-    excf = VariationsColumnFamily.new
-    record = {app_id: app.id}
+    exp = app.experiments.first
+    winner_var = exp.variations.first
+
+    record = {app_id: app.id, experiment_id: exp.id}
     loop do
 
-      exp = app.experiments.sample
       var = exp.variations.sample
 
-      record[:experiment_id] = exp.id
+      samples = [false, false, true]
+      samples = [false, true, true] if var.id == winner_var.id
+
       record[:variation_id]  = var.id
 
-      if [true, false].sample
-        puts "insert_success"
-        excf.insert_success(record)
+      if samples.sample
+        puts "insert_success for #{var.id}"
+        cql.insert_success(record)
       else
-        puts "insert_fail"
-        excf.insert_fail(record)
+        puts "insert_fail for #{var.id}"
+        cql.insert_fail(record)
       end
       # sleep(1.0)
     end
-
-
   end
 
 
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    experiment = Experiment.find 2
+    experiment = Experiment.find 1
 
     results = ABTest.score(experiment.variations,experiment.outcome)
     experiment.best = results.best

@@ -5,8 +5,39 @@
       %tbody
         %tr
           %th Variation
-          %th Clients
+          %th Participants
+          %th Conversions
+          %th Conversion Rate
         - @experiment.variations.each do |variation|
           %tr{ data: { target: variation_path(variation) }}
             %td= variation.name
-            %td= variation.clients.count
+            %td= variation.participants
+            %td= variation.converted
+            %td= variation.measure.round(4)
+  %hr
+  %div
+    %br
+    %div
+      %h3= 'Current Best'
+      - if @experiment.best
+        = link_to @experiment.best.name, variation_path(@experiment.best)
+      - else
+        N/A
+    %div
+      %h3= 'Current Base'
+      - if @experiment.base
+        = link_to @experiment.base.name, variation_path(@experiment.base)
+      - else
+        N/A
+    %div
+      %h3= 'Current Worst'
+      - if @experiment.worst
+        = link_to @experiment.worst.name, variation_path(@experiment.worst)
+      - else
+        N/A
+    %div
+      %h3= 'Current Outcome'
+      - if @experiment.outcome
+        = link_to @experiment.outcome.name, variation_path(@experiment.outcome)
+      - else
+        N/A

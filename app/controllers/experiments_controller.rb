@@ -24,6 +24,10 @@ class ExperimentsController < InheritedResources::Base
     end
   end
 
+  def show
+    @experiment = Experiment.find params[:id]
+  end
+
   def create
     @experiment = current_app.experiments.build permitted_params
     create! do |success, failure|
