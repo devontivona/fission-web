@@ -25,6 +25,11 @@ module CassandraHelper
       @client = Cql::Client::connect(@options)
 
       if @client
+      @select_statement = @client.prepare(%{
+        SELECT app_id, experiment_id, variation_id, success_count, total_count 
+          FROM #{@keyspace}.#{@column_family}
+          WHERE app_id=? AND experiment_id=? AND variation_id=?
+      })
       @success_statement = @client.prepare(%{
         UPDATE #{@keyspace}.#{@column_family}
           SET total_count = total_count + 1, success_count = success_count + 1
@@ -40,11 +45,17 @@ module CassandraHelper
       end
     end
 
-    def insert_success(record)
-      if @success_statement
-        @success_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
+    def select(record)
+      if @select_statement
+        return @select_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
       end
     end
+    def insert_fail(record)
+      if @fail_statement
+        @fail_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
+      end
+    end
+
     def insert_fail(record)
       if @fail_statement
         @fail_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])

@@ -8,7 +8,7 @@ namespace :split do
 
 
   desc "Check running Applications"
-  task :test => :environment do
+  task :generate => :environment do
 
     app = App.first
     excf = ExperimentsColumnFamily.new
@@ -32,6 +32,28 @@ namespace :split do
     end
 
 
+  end
+
+
+  desc "Compute Split test on all experiments"
+  task :process => :environment do
+
+    app = App.first
+    excf = ExperimentsColumnFamily.new
+    query = {app_id:app.id}
+    app.experiments.each do |experiment|
+      experiment.variations.each do |variation|
+
+        query[:experiment_id] = experiment.id
+        query[:variation_id]  = variation.id
+
+        excf.select(query).each do |row|
+          puts row.inspect
+        end
+
+      end
+    end
+  
   end
 
 end
