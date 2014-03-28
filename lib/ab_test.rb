@@ -19,11 +19,9 @@ class ABTest
     probability ? probability.last : 0
   end
 
-  # # Alternative chosen when this experiment completed.
-  # def outcome
-  #   return unless @playground.collecting?
-  #   outcome = connection.ab_get_outcome(@id)
-  #   outcome && _alternatives[outcome]
+  # def outcome_is(alternatives, rate=0.8)
+  #   a, b = alternatives
+  #   @outcome_is = b.conversion_rate >= rate * a.conversion_rate ? b : a
   # end
 
   def self.score(alternatives, outcome = nil, probability = 90)
@@ -55,6 +53,24 @@ class ABTest
     best = sorted.last if sorted.last.measure > 0.0
     choice = outcome ? outcome : (best && best.probability >= probability ? best : nil)
     Struct.new(:variations, :best, :base, :worst, :choice, :method).new(alts, best, base, least, choice, :score)
+  end
+
+  def complete!(alternatives, outcome = nil)
+    unless outcome
+      # if outcome_is
+      #   begin
+      #     result = outcome_is(alternatives)
+      #     outcome = result.id
+      #   rescue
+      #     warn "Error in AbTest#complete!: #{$!}"
+      #   end
+      # else
+        best = score(alternatives, outcome).best
+        outcome = best.id if best
+      # end
+    end
+
+    outcome
   end
 
 end

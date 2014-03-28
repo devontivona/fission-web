@@ -48,26 +48,6 @@ namespace :split do
     experiment.choice = results.choice
     experiment.save
     results.variations.select(&:save)
-    
-    # puts ABTest.score(experiment.all, experiment.outcome)
-
-    # puts VariationsColumnFamily.counts(Variation.first)
-
-    # app = App.first
-    # excf = VariationsColumnFamily.new
-    # query = {app_id:app.id}
-    # app.experiments.each do |experiment|
-    #   experiment.variations.each do |variation|
-
-    #     query[:experiment_id] = experiment.id
-    #     query[:variation_id]  = variation.id
-
-    #     excf.select(query).each do |row|
-    #       puts row.inspect
-    #     end
-
-    #   end
-    # end
   
   end
 
