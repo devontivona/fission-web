@@ -14,8 +14,8 @@ namespace :split do
     cql = VariationsColumnFamily.new
 
     app = App.first
-    exp = app.experiments.first
-    winner_var = exp.variations.first
+    exp = app.experiments.last
+    winner_var = exp.variations.sample
 
     record = {app_id: app.id, experiment_id: exp.id}
     loop do
@@ -42,7 +42,7 @@ namespace :split do
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    experiment = Experiment.find 1
+    experiment = Experiment.find 2
 
     results = ABTest.score(experiment.variations,experiment.outcome)
     experiment.best = results.best
@@ -51,6 +51,30 @@ namespace :split do
     experiment.choice = results.choice
     experiment.save
     results.variations.select(&:save)
+  
+  end
+
+
+  desc "Compute Split test on all experiments"
+  task :complete => :environment do
+
+    experiment = Experiment.find 1
+
+    outcome = ABTest.complete(experiment.variations,experiment.outcome)
+    if outcome
+      experiment.outcome = outcome
+      experiment.is_active = false
+      experiment.save
+    end
+    
+
+    
+    # experiment.best = results.best
+    # experiment.base = results.base
+    # experiment.worst = results.worst
+    # experiment.choice = results.choice
+    # experiment.save
+    # results.variations.select(&:save)
   
   end
 

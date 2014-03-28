@@ -19,6 +19,14 @@ class ABTest
     probability ? probability.last : 0
   end
 
+  def self.complete(alternatives, outcome = nil)
+    unless outcome
+      best = score(alternatives, outcome).best
+      outcome = best if best
+    end
+    outcome
+  end
+
   def self.score(alts, outcome = nil, probability = 90)
     # sort by conversion rate to find second best and 2nd best
     sorted = alts.sort_by(&:measure)
@@ -56,12 +64,6 @@ class ABTest
     Struct.new(:variations, :best, :base, :worst, :choice, :method).new(alts, best, base, least, choice, :score)
   end
 
-  def complete!(alternatives, outcome = nil)
-    unless outcome
-      best = score(alternatives, outcome).best
-      outcome = best.id if best
-    end
-    outcome
-  end
+  
 
 end
