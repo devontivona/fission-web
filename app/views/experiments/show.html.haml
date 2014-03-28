@@ -1,6 +1,11 @@
 #experiments
   %div
-    %h2= @experiment.name
+    %span
+      %span.left
+        %h2= @experiment.name
+      %span.right
+        = link_to "Complete Experiment", apps_path, class: :button
+
     %table
       %tbody
         %tr
