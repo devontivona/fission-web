@@ -90,9 +90,9 @@ module CassandraHelper
         return @select_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
       end
     end
-    def insert_fail(record)
-      if @fail_statement
-        @fail_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
+    def insert_success(record)
+      if @success_statement
+        @success_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
       end
     end
 
