@@ -3,8 +3,12 @@
     %span
       %span.left
         %h2= @experiment.name
-      %span.right
-        = link_to "Complete Experiment", apps_path, class: :button
+      - if @experiment.is_active 
+        %span.right
+          = link_to "Complete Experiment", complete_experiment_path(@experiment), class: :button
+      - else
+        %span.right
+          = link_to "Completed", experiment_path(@experiment), class: :button
 
     %table
       %tbody

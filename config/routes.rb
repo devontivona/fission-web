@@ -5,13 +5,18 @@ Fission::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'apps#index'
   resources :apps
-  resources :experiments
   resources :variations
   resources :clients
   resources :assignments
   resources :events
+  resources :experiments do
+    member do
+      get 'complete'
+    end
+  end
 
   mount Resque::Server, :at => "/resque"
+
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
