@@ -29,23 +29,32 @@
           %th Current Worst
           %th Outcome/Winner
           %tr
-            %td{ data: { target: variation_path(@experiment.best) }}
-              - if @experiment.best
+            - if @experiment.best
+              %td{ data: { target: variation_path(@experiment.best) }}
                 = @experiment.best.name
-              - else
+            - else
+              %td
                 N/A
-            %td
-              - if @experiment.base
-                = link_to @experiment.base.name, variation_path(@experiment.base)
-              - else
+            - if @experiment.base
+              %td{ data: { target: variation_path(@experiment.base) }}
+                = @experiment.base.name
+            - else
+              %td
                 N/A
-            %td
-              - if @experiment.worst
-                = link_to @experiment.worst.name, variation_path(@experiment.worst)
-              - else
+            - if @experiment.worst
+              %td{ data: { target: variation_path(@experiment.worst) }}
+                = @experiment.worst.name
+            - else
+              %td
                 N/A
-            %td
-              - if @experiment.outcome
-                = link_to @experiment.winner.name, variation_path(@experiment.winner)
-              - else
+            - if @experiment.outcome
+              %td{ data: { target: variation_path(@experiment.outcome) }}
+                = @experiment.outcome.name
+            - else
+              %td
                 N/A
+
+
+
+
+
