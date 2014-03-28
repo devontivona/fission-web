@@ -11,7 +11,7 @@ namespace :split do
   task :generate => :environment do
 
     app = App.first
-    excf = ExperimentsColumnFamily.new
+    excf = VariationsColumnFamily.new
     record = {app_id: app.id}
     loop do
 
@@ -38,10 +38,10 @@ namespace :split do
   desc "Compute Split test on all experiments"
   task :process => :environment do
 
-    puts ExperimentsColumnFamily.counts(Experiment.first)
+    puts VariationsColumnFamily.counts(Variation.first)
 
     # app = App.first
-    # excf = ExperimentsColumnFamily.new
+    # excf = VariationsColumnFamily.new
     # query = {app_id:app.id}
     # app.experiments.each do |experiment|
     #   experiment.variations.each do |variation|

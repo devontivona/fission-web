@@ -10,19 +10,21 @@
 #
 
 class Variation < ActiveRecord::Base
+  include CassandraHelper
+
   belongs_to :experiment
   has_many :assignments, dependent: :destroy 
   has_many :clients, through: :assignments
   validates :name, presence: true, uniqueness: { scope: :experiment_id }
 
-
-
   def participants
-    @participants = self.clients.count
+    load_counts unless @particpants
+    @particpants
   end
   
   def converted
-      
+    load_counts unless @converted
+    @converted
   end
 
   def measure
@@ -33,6 +35,10 @@ class Variation < ActiveRecord::Base
 
   def conversion_rate
     @conversion_rate ||= (participants > 0 ? converted.to_f/participants.to_f  : 0.0)
+  end
+  
+  def load_counts
+    @particpants, @converted = VariationsColumnFamily.counts(self)
   end
 
 end

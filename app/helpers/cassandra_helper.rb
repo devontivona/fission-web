@@ -6,7 +6,7 @@ module CassandraHelper
     def prepare() raise NotImplementedError end
   end
 
-  class ExperimentsColumnFamily < Cassandra 
+  class VariationsColumnFamily < Cassandra 
 
     # app_id BIGINT,
     # experiment_id BIGINT,
@@ -45,9 +45,9 @@ module CassandraHelper
       end
     end
 
-    def self.counts(experiment)
+    def self.experiment_counts(experiment)
 
-      excf = ExperimentsColumnFamily.new
+      cql = VariationsColumnFamily.new
       query = {
         app_id:experiment.app.id,
         experiment_id: experiment.id
@@ -57,13 +57,32 @@ module CassandraHelper
       experiment.variations.each do |variation|
 
         query[:variation_id]  = variation.id
-        excf.select(query).each do |row|
+        cql.select(query).each do |row|
           counts[:total_count]   += row['total_count']
           counts[:success_count] += row['success_count']
         end
       end
 
       counts
+    end
+
+    def self.counts(variation)
+
+      cql = VariationsColumnFamily.new
+      query = {
+        app_id: variation.experiment.app.id,
+        experiment_id: variation.experiment.id,
+        variation_id: variation.id
+      }
+      
+      counts = {total_count: 0, success_count: 0}
+
+      cql.select(query).each do |row|
+        counts[:total_count]   += row['total_count']
+        counts[:success_count] += row['success_count']
+      end
+
+      return counts[:total_count], counts[:success_count]
     end
 
     def select(record)
