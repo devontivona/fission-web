@@ -6,18 +6,69 @@ module CassandraHelper
     def prepare() raise NotImplementedError end
   end
 
-  class EventsColumnFamily < Cassandra 
+  class ExperimentsColumnFamily < Cassandra 
 
+    # app_id BIGINT,
+    # experiment_id BIGINT,
+    # variation_id BIGINT,
+
+    # success_count COUNTER,
+    # total_count COUNTER
     def initialize
       @keyspace = 'fission_dev'
-      @column_family = 'events'
-      @options = Rails.application.config.cassandra
-      @client = Cql::Client::connect(@options)
-      
+      @column_family = 'variations'    
       prepare()
     end
 
     def prepare
+      @options = Rails.application.config.cassandra
+      @client = Cql::Client::connect(@options)
+
+      if @client
+      @success_statement = @client.prepare(%{
+        UPDATE #{@keyspace}.#{@column_family} (
+          SET total_count = total_count + 1, success_count = success_count + 1
+          WHERE app_id=? AND experiment_id=? AND variation_id=?
+      })
+      @fail_statement = @client.prepare(%{
+        UPDATE #{@keyspace}.#{@column_family} (
+          SET total_count = total_count + 1
+          WHERE app_id=? AND experiment_id=? AND variation_id=?
+      })
+      else
+        raise 'Cassandra client is Nil'
+      end
+    end
+
+    def insert_success
+      if @success_statement
+        @success_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
+      end
+    end
+    def insert_fail
+      if @fail_statement
+        @fail_statement.execute(record[:app_id],record[:experiment_id], record[:variation_id])
+      end
+    end
+
+  end
+
+
+
+
+
+  class EventsColumnFamily < Cassandra 
+
+    def initialize
+      @keyspace = 'fission_dev'
+      @column_family = 'events'      
+      prepare()
+    end
+
+    def prepare
+      @options = Rails.application.config.cassandra
+      @client = Cql::Client::connect(@options)
+
       if @client
       @statement = @client.prepare(
         %{INSERT INTO #{@keyspace}.#{@column_family} (
@@ -49,9 +100,6 @@ module CassandraHelper
         )
       end
     end
-
-
-
   end
 
 end

@@ -13,10 +13,10 @@ namespace :events do
     exp = app.experiments.sample
     var = exp.variations.sample
 
-    weights = {a:25, b:30, c:25, d:5, e:10, f: 5}
+    weights = {a:15, b:40, c:25, d:5, e:10, f: 5}
     samples = {
-      a: [['open',:info], ['login',:info], ['close',:info]],
-      b: [['open',:info], ['login',:info], ['browse',:info], ['browse',:info], ['close',:info]],
+      a: [['open',:info], ['login',:info], ['settings',:info], ['close',:info]],
+      b: [['open',:info], ['login',:info], ['browse',:info], ['browse',:info], ['browse',:info], ['close',:info]],
       c: [['open',:info], ['login',:info], ['browse',:info], ['close',:info]],
       d: [['open',:info], ['login',:info], ['app_crash',:error]],
       e: [['open',:info], ['login',:info], ['add_to_cart',:info], ['close',:info]],

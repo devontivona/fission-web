@@ -5,26 +5,16 @@ CREATE KEYSPACE fission_dev
 USE fission_dev;
 
 -- Triggered by client side
-CREATE TABLE experiments(
-  server_timestamp TIMESTAMP,
-  
+CREATE TABLE variations(
   app_id BIGINT,
-  app_name TEXT,
-  app_access_token TEXT,
-  app_created_at TEXT,
-
   experiment_id BIGINT,
-  experiment_name TEXT,
-
   variation_id BIGINT,
-  variation_name TEXT,
 
-  success BIGINT,
-  total BIGINT,
+  success COUNTER,
+  total COUNTER,
 
-  PRIMARY KEY(app_id, variation_id)
+  PRIMARY KEY(app_id, experiment_id, variation_id)
 );
-
 
 
 -- Raw events
