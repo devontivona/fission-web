@@ -30,9 +30,12 @@ namespace :events do
       event = {}
       event[:body] = item[0]
       event[:status] = item[1]
-      event[:dbucket] = Time.now.getutc.strftime "%Y-%m-%d"
-      event[:hbucket] = Time.now.getutc.strftime "%Y-%m-%d-%H"
-      event[:mbucket] = Time.now.getutc.strftime "%Y-%m-%d-%H-%M"
+      event[:minute_bucket] = Time.now.getutc.strftime('%M').to_i
+      event[:hour_dbucket] = Time.now.getutc.strftime("%H").to_i
+      event[:week_dbucket] = Time.now.getutc.strftime('%W').to_i
+      event[:day_hbucket] = Time.now.getutc.strftime('%d').to_i
+      event[:month_bucket] = Time.now.getutc.strftime('%m').to_i
+      event[:year_bucket] = Time.now.getutc.strftime('%Y').to_i
 
       event[:app_id] = app.id
       event[:app_name] = app.name
