@@ -30,12 +30,14 @@ namespace :events do
       event = {}
       event[:body] = item[0]
       event[:status] = item[1]
-      event[:minute_bucket] = Time.now.getutc.strftime('%M').to_i
-      event[:hour_dbucket] = Time.now.getutc.strftime("%H").to_i
-      event[:week_dbucket] = Time.now.getutc.strftime('%W').to_i
-      event[:day_hbucket] = Time.now.getutc.strftime('%d').to_i
-      event[:month_bucket] = Time.now.getutc.strftime('%m').to_i
-      event[:year_bucket] = Time.now.getutc.strftime('%Y').to_i
+      event[:client_timestamp] = Time.now.to_i
+      event[:second] = Time.now.to_i
+      event[:minute_bucket] = Time.now.getutc.min
+      event[:hour_bucket] = Time.now.getutc.hour
+      event[:week_bucket] = Time.now.getutc.yday/7
+      event[:day_bucket] = Time.now.getutc.day
+      event[:month_bucket] = Time.now.getutc.month
+      event[:year_bucket] = Time.now.getutc.year
 
       event[:app_id] = app.id
       event[:app_name] = app.name
@@ -52,12 +54,6 @@ namespace :events do
       event[:client_carrier] = client.carrier
       event[:client_token] = client.token
       event[:client_created_at] = client.created_at
-
-      event[:experiment_id] = exp.id
-      event[:experiment_name] = exp.name
-
-      event[:variation_id] = var.id
-      event[:variation_name] = var.name
       events << event
     end
 
