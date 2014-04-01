@@ -5,7 +5,7 @@ CREATE KEYSPACE fission_dev
 USE fission_dev;
 
 -- Triggered by client side
-CREATE TABLE variations(
+CREATE TABLE variation_count(
   app_id BIGINT,
   experiment_id BIGINT,
   variation_id BIGINT,
@@ -17,43 +17,43 @@ CREATE TABLE variations(
 );
 
 
--- Raw events
-CREATE TABLE events(
-  id TIMEUUID PRIMARY KEY,
-  server_timestamp TIMESTAMP,
-  client_timestamp TIMESTAMP,
-  body TEXT,
-  status TEXT,
+-- -- Raw events
+-- CREATE TABLE events(
+--   id TIMEUUID PRIMARY KEY,
+--   server_timestamp TIMESTAMP,
+--   client_timestamp TIMESTAMP,
+--   body TEXT,
+--   status TEXT,
   
-  hour_bucket INT,
-  minute_bucket INT,
-  day_bucket INT,
-  week_bucket INT,
-  month_bucket INT,
-  year_bucket INT,
+--   hour_bucket INT,
+--   minute_bucket INT,
+--   day_bucket INT,
+--   week_bucket INT,
+--   month_bucket INT,
+--   year_bucket INT,
 
-  app_id BIGINT,
-  app_name TEXT,
-  app_access_token TEXT,
-  app_created_at TEXT,
+--   app_id BIGINT,
+--   app_name TEXT,
+--   app_access_token TEXT,
+--   app_created_at TEXT,
 
-  client_id BIGINT,
-  client_library TEXT,
-  client_version TEXT,
-  client_manufacturer TEXT,
-  client_os TEXT,
-  client_os_version TEXT,
-  client_model TEXT,
-  client_carrier TEXT,
-  client_token TEXT,
-  client_created_at TEXT,
+--   client_id BIGINT,
+--   client_library TEXT,
+--   client_version TEXT,
+--   client_manufacturer TEXT,
+--   client_os TEXT,
+--   client_os_version TEXT,
+--   client_model TEXT,
+--   client_carrier TEXT,
+--   client_token TEXT,
+--   client_created_at TEXT,
 
-  experiment_id BIGINT,
-  experiment_name TEXT,
+--   experiment_id BIGINT,
+--   experiment_name TEXT,
 
-  variation_id BIGINT,
-  variation_name TEXT
-);
+--   variation_id BIGINT,
+--   variation_name TEXT
+-- );
 
 
 
