@@ -47,16 +47,31 @@ class Event
 
 
   def save()
-    connect() unless @statement
-   
+    
+
+
+    unless @statement
+      connect() 
+    end
+    # @statement = $cql.prepare(
+    #   %{INSERT INTO fission_dev.events ( 
+    #     id,
+    #     body,
+    #     app_id,
+    #     client_id,
+    #     bucket
+    #   ) VALUES (now(),?,?,?,?)}
+    # )
 
     payload = to_json()
     puts payload
-    # # puts "Inserting [#{payload}, #{self.app.id}, #{self.client.id}, #{self.bucket}]"
-    # # puts "#{payload} #{payload.class}"
-    # # puts "#{}"
+    # puts "Inserting [#{payload}, #{self.app.id}, #{self.client.id}, #{self.bucket}]"
+    # puts "#{payload} #{payload.class}"
+
+
+    # puts "#{}"
     
-    # @statement.execute(self.app.id, self.client.id, self.bucket, to_json())
+    # @statement.execute(payload, self.app.id, self.client.id, self.bucket)
   end
 
   def get(params=nil)
@@ -68,7 +83,11 @@ class Event
   
 
   def to_json(*a)
-    as_json.to_json(*a, except: ['statement'])
+    # a.each do |k,v|
+    #   puts "#{k}"
+    # end
+    # puts a.inspect
+    as_json.to_json(*a, except: ['statement', 'select_statement'])
   end
 
   # def as_json(options={})
@@ -87,7 +106,8 @@ class Event
   
 
   def connect()
-     @statement = $cql.prepare(
+    puts "Connecting"
+    @statement = $cql.prepare(
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
         app_id,
@@ -99,8 +119,10 @@ class Event
 
     @select_statement = $cql.prepare(
       %{SELECT * FROM #{keyspace()}.#{column_family()}
-        WHERE app_id=? AND client_id=? AND bucket=?}
+        WHERE app_id=? AND client_id=? AND bucket=?
+      }
     )
+    puts "Connected"
   end
 
 
