@@ -17,6 +17,23 @@ CREATE TABLE variation_count(
 );
 
 
+
+-- Raw events
+CREATE TABLE events(
+  id TIMEUUID,
+  server_timestamp TIMESTAMP,
+  client_timestamp TIMESTAMP,
+  body TEXT,
+
+  app_id BIGINT,
+  client_id BIGINT,
+  partition TEXT,
+
+  PRIMARY KEY(app_id, client_id, partition)
+);
+
+
+
 -- -- Raw events
 -- CREATE TABLE events(
 --   id TIMEUUID PRIMARY KEY,

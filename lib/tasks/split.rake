@@ -11,8 +11,6 @@ namespace :split do
   desc "Check running Applications"
   task :generate => :environment do
 
-    
-
     app = App.first
     exp = app.experiments.last
     winner_var = exp.variations.sample
@@ -68,16 +66,7 @@ namespace :split do
       experiment.is_active = false
       experiment.save
     end
-    
-
-    
-    # experiment.best = results.best
-    # experiment.base = results.base
-    # experiment.worst = results.worst
-    # experiment.choice = results.choice
-    # experiment.save
-    # results.variations.select(&:save)
-  
+      
   end
 
 end
