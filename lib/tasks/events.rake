@@ -96,32 +96,12 @@ namespace :events do
 
   desc "Consumes events"
   task :consume => :environment do
-    # # qevents = EventsQueue.new
-
-    # # qevents.bpop() do |message|
-    # #   puts "Received: #{message}"
-    # #   # sleep(1.1)
-    # # end
-
-    # qevents = EventsQueue.new
-    # cql = EventsColumnFamily.new
-
-    # qevents.bpop() do |messages|
-    #   events = JSON.parse(messages, {symbolize_names: true})
-    #   events.each do |event|
-    #     cql.insert(event)
-    #   end
-    #   sleep(1.1)
-    # end
-
-
+  
     event_queue = EventsQueue.new
     event_queue.bpop() do |messages|
       events = JSON.parse(messages, {symbolize_names: true})
       events.each do |json_data|
-        event = Event.new(json_data)
-        # puts event.inspect
-        event.save
+        Event.create(json_data)
       end
     end
 

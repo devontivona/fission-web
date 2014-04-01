@@ -29,6 +29,10 @@ class Event
     end
   end
 
+  def self.create(params={})
+    new(params).save
+  end
+
   def keyspace
     'fission_dev'
   end
