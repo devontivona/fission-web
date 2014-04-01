@@ -44,7 +44,6 @@ namespace :events do
       event.client_timestamp = time.getutc.to_i - rand(10..1000)
       event.server_timestamp = time.getutc.to_i
       event.bucket = Time.now.getutc.strftime "%Y-%m-%d-%H"
-      puts event.to_json
       events << event
     end
 
@@ -61,6 +60,12 @@ namespace :events do
     loop do
       client = app.clients.sample
       events = gen_events(app, client)
+
+      events.each do |event|
+        # puts "Saved #{event.save}"
+        event.save()
+        sleep(1.0)
+      end
       sleep(1.0)
 
 

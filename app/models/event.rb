@@ -8,7 +8,7 @@
 #  id        :timeuuid
 #  body      :text
 #
-require 'cql'
+require 'json'
 
 class Event
 
@@ -44,10 +44,19 @@ class Event
 
 
 
-  # Save if the user successfully saw a variation
+
+
   def save()
     connect() unless @statement
-    @statement.execute(self.body, self.app.id, self.client.id, self.bucket)
+   
+
+    payload = to_json()
+    puts payload
+    # # puts "Inserting [#{payload}, #{self.app.id}, #{self.client.id}, #{self.bucket}]"
+    # # puts "#{payload} #{payload.class}"
+    # # puts "#{}"
+    
+    # @statement.execute(self.app.id, self.client.id, self.bucket, to_json())
   end
 
   def get(params=nil)
@@ -58,30 +67,39 @@ class Event
 
   
 
+  def to_json(*a)
+    as_json.to_json(*a, except: ['statement'])
+  end
 
-
+  # def as_json(options={})
+  #   {
+  #     "app" => self.app.as_json,
+  #     "client" => self.client.as_json,
+  #     "name" => self.name,
+  #     "status" => self.status
+  #   }
+  # end
 
   
 
   private 
 
-  def connect()
-    @options = Rails.application.config.cassandra
-    @client = Cql::Client::connect(@options)
+  
 
-    @statement = @client.prepare(
+  def connect()
+     @statement = $cql.prepare(
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
-        body,
         app_id,
         client_id,
-        bucket
-      ) VALUES (now(),?,?,?,?)})
-    
-    @select_statement = @client.prepare(
+        bucket,
+        body
+      ) VALUES (now(),?,?,?,?)}
+    )
+
+    @select_statement = $cql.prepare(
       %{SELECT * FROM #{keyspace()}.#{column_family()}
-        WHERE app_id=? AND client_id=? AND bucket=?
-      }
+        WHERE app_id=? AND client_id=? AND bucket=?}
     )
   end
 

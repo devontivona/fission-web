@@ -2,6 +2,7 @@ require 'cql'
 
 module CassandraHelper
 
+
   class EventsColumnFamily 
 
     def initialize

@@ -17,17 +17,16 @@ CREATE TABLE variation_count(
 );
 
 
-
+-- DROP COLUMNFAMILY events;
 -- Raw events
 CREATE TABLE events(
   id TIMEUUID,
-  body TEXT,
-
   app_id BIGINT,
   client_id BIGINT,
   bucket TEXT,
+  body TEXT,
 
-  PRIMARY KEY(app_id, client_id, bucket)
+  PRIMARY KEY(app_id, client_id, bucket, id)
 );
 
 
