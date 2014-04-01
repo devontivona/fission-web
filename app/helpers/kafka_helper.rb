@@ -22,7 +22,7 @@ module KafkaHelper
         messages.each do |message|
           yield message.value
         end
-        # sleep(0.25)
+        sleep(0.25)
       end
     end
 
