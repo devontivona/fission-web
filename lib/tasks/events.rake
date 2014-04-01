@@ -43,7 +43,7 @@ namespace :events do
       time = Time.mktime( event.year, event.month, event.day==0 ? 1 : event.day , event.hour, event.minute, event.second )
       event.client_timestamp = time.getutc.to_i - rand(10..1000)
       event.server_timestamp = time.getutc.to_i
-      event.bucket = Time.now.getutc.strftime "%Y-%m-%d-%H"
+      # event.bucket = Time.now.getutc.strftime "%Y-%m-%d-%H"
       events << event
     end
 
@@ -57,64 +57,66 @@ namespace :events do
     app = App.first
 
 
-    loop do
-      client = app.clients.sample
-      events = gen_events(app, client)
-
-      events.each do |event|
-        # puts "Saved #{event.save}"
-        event.save()
-        sleep(1.0)
-      end
-      sleep(1.0)
-
-
-    end
-
-    # uri = URI.parse('http://localhost:3000/events')
-
-    # headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8'}
     # loop do
     #   client = app.clients.sample
-    #   headers['Client-Token'] = client.token
-
     #   events = gen_events(app, client)
-    #   http = Net::HTTP.new(uri.host,uri.port)
-    #   req = Net::HTTP::Post.new(uri.request_uri, headers)
-    #   req.body = "events=#{events.to_json}"
-    #   res = http.request(req)
-    #   puts "Response #{res.code} #{res.message}: #{res.body}"
+
+    #   events.each do |event|
+    #     event.save()
+    #     sleep(1.0)
+    #   end
     #   sleep(1.0)
+
+
     # end
 
+    uri = URI.parse('http://localhost:3000/events')
+
+    headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8'}
+    loop do
+      client = app.clients.sample
+      headers['Client-Token'] = client.token
+
+      events = gen_events(app, client)
+      http = Net::HTTP.new(uri.host,uri.port)
+      req = Net::HTTP::Post.new(uri.request_uri, headers)
+      req.body = "events=#{events.to_json}"
+      res = http.request(req)
+      puts "Response #{res.code} #{res.message}: #{res.body}"
+      sleep(1.0)
+    end
+
   end
 
 
-  desc "Check running Applications"
-  task :consume => :environment do
-    Resque.enqueue(ConsumeEvents, {})
-  end
-
-  # desc "Consumes events"
+  # desc "Check running Applications"
   # task :consume => :environment do
-  #   # qevents = EventsQueue.new
-
-  #   # qevents.bpop() do |message|
-  #   #   puts "Received: #{message}"
-  #   #   # sleep(1.1)
-  #   # end
-
-  #   qevents = EventsQueue.new
-  #   cql = EventsColumnFamily.new
-
-  #   qevents.bpop() do |messages|
-  #     events = JSON.parse(messages, {symbolize_names: true})
-  #     events.each do |event|
-  #       cql.insert(event)
-  #     end
-  #     sleep(1.1)
-  #   end
+  #   Resque.enqueue(ConsumeEvents, {})
   # end
+
+  desc "Consumes events"
+  task :consume => :environment do
+    # # qevents = EventsQueue.new
+
+    # # qevents.bpop() do |message|
+    # #   puts "Received: #{message}"
+    # #   # sleep(1.1)
+    # # end
+
+    # qevents = EventsQueue.new
+    # cql = EventsColumnFamily.new
+
+    # qevents.bpop() do |messages|
+    #   events = JSON.parse(messages, {symbolize_names: true})
+    #   events.each do |event|
+    #     cql.insert(event)
+    #   end
+    #   sleep(1.1)
+    # end
+
+
+    
+  end
 
   desc "Produce events"
   task :produce => :environment do

@@ -4,7 +4,6 @@
 #
 #  app_id    :long
 #  client_id :long
-#  bucket    :text
 #  id        :timeuuid
 #  body      :text
 #
@@ -13,7 +12,7 @@ require 'json'
 class Event
 
   # Cassandra Variables
-  attr_accessor :id, :app_id, :experiment_id, :bucket
+  attr_accessor :id, :app_id, :experiment_id
 
 
   attr_accessor :app, :client
@@ -41,65 +40,21 @@ class Event
 
 
 
-
-
-
-
-
   def save()
-    
-
-
-    unless @statement
-      connect() 
-    end
-    # @statement = $cql.prepare(
-    #   %{INSERT INTO fission_dev.events ( 
-    #     id,
-    #     body,
-    #     app_id,
-    #     client_id,
-    #     bucket
-    #   ) VALUES (now(),?,?,?,?)}
-    # )
-
-    payload = to_json()
-    # puts payload
-    # puts "Inserting [#{payload}, #{self.app.id}, #{self.client.id}, #{self.bucket}]"
-    # puts "#{payload} #{payload.class}"
-
-
-    # puts "#{}"
-    
-    @statement.execute(self.app.id, self.client.id, payload)
+    prepare() unless @statement
+    @statement.execute(self.app.id, self.client.id, to_json())
   end
   
 
   def to_json(*a)
-    # a.each do |k,v|
-    #   puts "#{k}"
-    # end
-    # puts a.inspect
     as_json.to_json(*a, except: ['statement', 'select_statement'])
   end
-
-  # def as_json(options={})
-  #   {
-  #     "app" => self.app.as_json,
-  #     "client" => self.client.as_json,
-  #     "name" => self.name,
-  #     "status" => self.status
-  #   }
-  # end
 
   
 
   private 
 
-  
-
-  def connect()
-    puts "Connecting"
+  def prepare()
     @statement = $cql.prepare(
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
@@ -108,7 +63,6 @@ class Event
         body
       ) VALUES (now(),?,?,?)}
     )
-    puts "Connected"
   end
 
 
