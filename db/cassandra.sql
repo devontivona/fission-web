@@ -23,10 +23,9 @@ CREATE TABLE events(
   id TIMEUUID,
   app_id BIGINT,
   client_id BIGINT,
-  bucket TEXT,
   body TEXT,
 
-  PRIMARY KEY(app_id, client_id, bucket, id)
+  PRIMARY KEY(app_id, client_id, id)
 );
 
 

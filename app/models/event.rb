@@ -64,22 +64,15 @@ class Event
     # )
 
     payload = to_json()
-    puts payload
+    # puts payload
     # puts "Inserting [#{payload}, #{self.app.id}, #{self.client.id}, #{self.bucket}]"
     # puts "#{payload} #{payload.class}"
 
 
     # puts "#{}"
     
-    # @statement.execute(payload, self.app.id, self.client.id, self.bucket)
+    @statement.execute(self.app.id, self.client.id, payload)
   end
-
-  def get(params=nil)
-    connect() unless @select_statement
-    result = @select_statement.execute(param[:app_id], params[:client_id], params[:bucket])
-    result ? result : []
-  end
-
   
 
   def to_json(*a)
@@ -112,15 +105,8 @@ class Event
         id,
         app_id,
         client_id,
-        bucket,
         body
-      ) VALUES (now(),?,?,?,?)}
-    )
-
-    @select_statement = $cql.prepare(
-      %{SELECT * FROM #{keyspace()}.#{column_family()}
-        WHERE app_id=? AND client_id=? AND bucket=?
-      }
+      ) VALUES (now(),?,?,?)}
     )
     puts "Connected"
   end
