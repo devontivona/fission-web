@@ -39,8 +39,18 @@ GEM
       execjs
     coffee-script-source (1.7.0)
     cql-rb (1.2.1)
+    elasticsearch (1.0.1)
+      elasticsearch-api (= 1.0.1)
+      elasticsearch-transport (= 1.0.1)
+    elasticsearch-api (1.0.1)
+      multi_json
+    elasticsearch-transport (1.0.1)
+      faraday
+      multi_json
     erubis (2.7.0)
     execjs (2.0.2)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     haml (4.0.5)
       tilt
     haml-rails (0.5.3)
@@ -75,6 +85,7 @@ GEM
     minitest (4.7.5)
     mono_logger (1.1.0)
     multi_json (1.8.4)
+    multipart-post (2.0.0)
     pg (0.17.1)
     polyglot (0.3.4)
     poseidon (0.0.4)
@@ -162,6 +173,7 @@ DEPENDENCIES
   bourbon
   coffee-rails (~> 4.0.0)
   cql-rb
+  elasticsearch
   haml-rails
   huxley
   inherited_resources

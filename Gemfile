@@ -43,6 +43,7 @@ gem 'inherited_resources'
 
 # gem 'cequel'
 # gem 'cassandra'
+gem 'elasticsearch'
 gem 'cql-rb'
 gem 'kafka-rb'
 gem 'poseidon'

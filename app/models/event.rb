@@ -8,6 +8,8 @@
 #  body      :text
 #
 require 'json'
+require 'elasticsearch'
+
 
 class Event
 
@@ -45,18 +47,29 @@ class Event
 
 
   def save()
-    prepare() unless @statement
+    prepare() unless @statement and @esc
+
+    payload = to_json()
+
     if self.app.is_a?(Hash) and self.client.is_a?(Hash)
-      puts "Saving as Hash"
-      @statement.execute(self.app[:id], self.client[:id], to_json())
+      
+      app_id = self.app[:id]
+      client_id = self.client[:id]
     else
-      @statement.execute(self.app.id, self.client.id, to_json())
+      app_id = self.app.id
+      client_id = self.client.id
     end
+
+    @statement.execute(app_id, client_id, payload)
+    puts @esc.index(index: 'events', type: "#{app_id}-#{client_id}", body: payload)
+
+
+    
+    
   end
-  
 
   def to_json(*a)
-    as_json.to_json(*a, except: ['statement', 'select_statement', 'cql'])
+    as_json.to_json(*a, except: ['statement', 'select_statement', 'cql', 'esc'])
   end
 
   
@@ -75,6 +88,8 @@ class Event
         body
       ) VALUES (now(),?,?,?)}
     )
+
+    @esc ||= Elasticsearch::Client.new
   end
 
 
