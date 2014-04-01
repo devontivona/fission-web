@@ -66,7 +66,7 @@ class VariationCount
   end
 
   def get(params=nil)
-    connect() unless @success_statement
+    connect() unless @select_statement
 
     results = {total_count: 0, success_count: 0}
     
