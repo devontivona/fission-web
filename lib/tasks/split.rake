@@ -2,8 +2,8 @@ require 'net/http'
 require 'json'
 require 'ab_test'
 
-require "#{Rails.root}/app/helpers/cassandra_helper"
-include CassandraHelper
+# require "#{Rails.root}/app/helpers/cassandra_helper"
+# include CassandraHelper
 
 namespace :split do
 
@@ -11,7 +11,7 @@ namespace :split do
   desc "Check running Applications"
   task :generate => :environment do
 
-    cql = VariationsColumnFamily.new
+    
 
     app = App.first
     exp = app.experiments.last
@@ -27,12 +27,14 @@ namespace :split do
 
       record[:variation_id]  = var.id
 
+      vc = VariationCount.new(record)
+
       if samples.sample
         puts "insert_success for #{var.id}"
-        cql.insert_success(record)
+        vc.save_success()
       else
         puts "insert_fail for #{var.id}"
-        cql.insert_fail(record)
+        vc.save()
       end
       # sleep(1.0)
     end
