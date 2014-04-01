@@ -30,7 +30,7 @@ class Event
   end
 
   def self.create(params={})
-    new(params).save
+    e = new(params).save
   end
 
   def keyspace
@@ -47,6 +47,7 @@ class Event
   def save()
     prepare() unless @statement
     if self.app.is_a?(Hash) and self.client.is_a?(Hash)
+      puts "Saving as Hash"
       @statement.execute(self.app[:id], self.client[:id], to_json())
     else
       @statement.execute(self.app.id, self.client.id, to_json())
@@ -55,7 +56,7 @@ class Event
   
 
   def to_json(*a)
-    as_json.to_json(*a, except: ['statement', 'select_statement'])
+    as_json.to_json(*a, except: ['statement', 'select_statement', 'cql'])
   end
 
   
@@ -63,7 +64,10 @@ class Event
   private 
 
   def prepare()
-    @statement = $cql.prepare(
+    @options = Rails.application.config.cassandra
+    @cql = Cql::Client::connect(@options)
+
+    @statement = @cql.prepare(
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
         app_id,

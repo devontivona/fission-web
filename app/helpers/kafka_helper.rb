@@ -3,6 +3,7 @@ module KafkaHelper
   # To start Kafka with Topic "fission.events"
   # zookeeper-server-start.sh /usr/local/kafka/config/zookeeper.properties
   # kafka-server-start.sh /usr/local/kafka/config/server.properties
+  # kafka-server-start.sh /usr/local/kafka/config/server1.properties
   # kafka-topics.sh --zookeeper localhost:2181 --create --topic fission.events --partitions 1 --replication-factor 1
 
   class DistQueue   
@@ -21,7 +22,7 @@ module KafkaHelper
         messages.each do |message|
           yield message.value
         end
-        sleep(0.25)
+        # sleep(0.25)
       end
     end
 

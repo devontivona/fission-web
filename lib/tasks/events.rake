@@ -55,21 +55,6 @@ namespace :events do
   task :generate => :environment do
 
     app = App.first
-
-
-    # loop do
-    #   client = app.clients.sample
-    #   events = gen_events(app, client)
-
-    #   events.each do |event|
-    #     event.save()
-    #     sleep(1.0)
-    #   end
-    #   sleep(1.0)
-
-
-    # end
-
     uri = URI.parse('http://localhost:3000/events')
 
     headers = {'Access-Token'=>app.access_token}
