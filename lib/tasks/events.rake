@@ -68,7 +68,7 @@ namespace :events do
       req.body = "events=#{events.to_json}"
       res = http.request(req)
       puts "Response #{res.code} #{res.message}: #{res.body}"
-      sleep(1.0)
+      # sleep(1.0)
     end
 
   end

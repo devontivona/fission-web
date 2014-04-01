@@ -44,6 +44,29 @@ class Event
   end
 
 
+  # {day: 4, hour: 4, minute: 8}
+  def self.name_per_minute(params={})
+    query = {}
+    query[:aggs] = {}
+    query[:aggs][:name_per_minute] = {}
+    query[:aggs][:name_per_minute][:filter] = {}
+    query[:aggs][:name_per_minute][:filter][:and] = []
+
+
+    query[:aggs][:name_per_minute][:filter][:and] << { term: {day: params[:day]} }
+    query[:aggs][:name_per_minute][:filter][:and] << { term: {hour: params[:hour]} }
+    query[:aggs][:name_per_minute][:filter][:and] << { term: {minute: params[:minute]} }
+
+
+    query[:aggs][:name_per_minute][:aggs] = {}
+    query[:aggs][:name_per_minute][:aggs][:path] = {}
+    query[:aggs][:name_per_minute][:aggs][:path] = { terms: {field: 'name'}}
+
+    puts query
+
+  end
+
+
 
 
   def save()
