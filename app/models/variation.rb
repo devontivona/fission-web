@@ -46,7 +46,7 @@ class Variation < ActiveRecord::Base
   end
   
   def load_counts
-    @particpants, @converted = VariationsColumnFamily.counts(self)
+    @particpants, @converted = VariationCount.counts(self)
   end
 
 end

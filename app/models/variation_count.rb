@@ -51,61 +51,26 @@ class VariationCount
     @success_statement.execute(self.app_id, self.experiment_id, self.variation_id)
   end
 
-  def get(params=nil)
-    connect() unless @success_statement
-
-    results = {total_count: 0, success_count: 0}
-    
-    if params
-      exp_vars = @select_statement.execute(params[:app_id], params[:experiment_id], params[:variation_id])
-    else
-      exp_vars = @select_statement.execute(self.app_id, self.experiment_id, self.variation_id)
-    end
-
-    if exp_vars
-      exp_vars.each do |row|
-        results[:total_count]   += row['total_count']
-        results[:success_count] += row['success_count']
-      end
-    end
-    return results[:total_count], results[:success_count]
-  end
-
-
-
 
   def counts()
-    return self.get
-    
-
-
-    # connect() unless @success_statement
-    # exp_vars = @select_statement.execute(self.app_id, self.experiment_id, self.variation_id)
-
-    
+    return self.get()  
   end
 
 
   def self.counts(variation)
-    vc = VariationCount.new
-    
-    # counts = {total_count: 0, success_count: 0}
-    return vc.get({
+    return VariationCount.new.get({
       app_id: variation.experiment.app.id,
       experiment_id: variation.experiment.id,
       variation_id: variation.id
     })
-
-    # exp_vars = vc.get(query)
-
-    # if exp_vars
-    #   exp_vars.each do |row|
-    #     counts[:total_count]   += row['total_count']
-    #     counts[:success_count] += row['success_count']
-    #   end
-    # end
-    # return counts[:total_count], counts[:success_count]
   end
+
+  
+
+
+
+
+  
 
   private 
 
@@ -128,5 +93,26 @@ class VariationCount
         SET total_count = total_count + 1
         WHERE app_id=? AND experiment_id=? AND variation_id=?
     })
+  end
+
+
+  def get(params=nil)
+    connect() unless @success_statement
+
+    results = {total_count: 0, success_count: 0}
+    
+    if params
+      exp_vars = @select_statement.execute(params[:app_id], params[:experiment_id], params[:variation_id])
+    else
+      exp_vars = @select_statement.execute(self.app_id, self.experiment_id, self.variation_id)
+    end
+
+    if exp_vars
+      exp_vars.each do |row|
+        results[:total_count]   += row['total_count']
+        results[:success_count] += row['success_count']
+      end
+    end
+    return results[:total_count], results[:success_count]
   end
 end
