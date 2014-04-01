@@ -12,7 +12,16 @@ require 'cql'
 
 class Event
 
+  # Cassandra Variables
   attr_accessor :id, :app_id, :experiment_id, :bucket
+
+
+  attr_accessor :app, :client
+  attr_accessor :second, :minute, :hour, :day, :week, :month, :year
+  attr_accessor :name, :status
+  attr_accessor :server_timestamp, :client_timestamp
+
+
 
 
   def initialize(params={})
@@ -38,7 +47,7 @@ class Event
   # Save if the user successfully saw a variation
   def save()
     connect() unless @statement
-    @statement.execute(self.body, self.app_id, self.client_id, self.bucket)
+    @statement.execute(self.body, self.app.id, self.client.id, self.bucket)
   end
 
   def get(params=nil)
