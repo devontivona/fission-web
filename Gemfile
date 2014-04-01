@@ -41,7 +41,8 @@ gem 'haml-rails'
 gem 'inherited_resources'
 
 
-gem 'cassandra'
+# gem 'cequel'
+# gem 'cassandra'
 gem 'cql-rb'
 gem 'kafka-rb'
 gem 'poseidon'
