@@ -41,7 +41,7 @@ class VariationCount
 
   # Save if the user successfully saw a variation
   def save()
-    connect() unless @success_statement
+    connect() unless @statement
     @statement.execute(self.app_id, self.experiment_id, self.variation_id)
   end
 
