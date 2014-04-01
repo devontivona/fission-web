@@ -72,7 +72,7 @@ namespace :events do
 
     uri = URI.parse('http://localhost:3000/events')
 
-    headers = {'Access-Token'=>'921eee9bfdd1086077346f6e6ba0ade8'}
+    headers = {'Access-Token'=>app.access_token}
     loop do
       client = app.clients.sample
       headers['Client-Token'] = client.token
@@ -115,7 +115,16 @@ namespace :events do
     # end
 
 
-    
+    event_queue = EventsQueue.new
+    event_queue.bpop() do |messages|
+      events = JSON.parse(messages, {symbolize_names: true})
+      events.each do |json_data|
+        event = Event.new(json_data)
+        # puts event.inspect
+        event.save
+      end
+    end
+
   end
 
   desc "Produce events"

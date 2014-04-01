@@ -42,7 +42,11 @@ class Event
 
   def save()
     prepare() unless @statement
-    @statement.execute(self.app.id, self.client.id, to_json())
+    if self.app.is_a?(Hash) and self.client.is_a?(Hash)
+      @statement.execute(self.app[:id], self.client[:id], to_json())
+    else
+      @statement.execute(self.app.id, self.client.id, to_json())
+    end
   end
   
 
