@@ -16,20 +16,21 @@ module KafkaHelper
       opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
       producer = Kafka::Producer.new(opts)
       producer.push(Kafka::Message.new(message))
+      
     end
 
-    def bpop()
-      uri = @options[:url].split(':')
-      @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :latest_offset)
+    # def bpop()
+    #   uri = @options[:url].split(':')
+    #   @consumer = Poseidon::PartitionConsumer.new('fission_consumer', uri[0], uri[1], @topic, 0, :latest_offset)
 
-      loop do
-        messages = @consumer.fetch
-        messages.each do |message|
-          yield message.value
-        end
-        sleep(0.25)
-      end
-    end
+    #   loop do
+    #     messages = @consumer.fetch
+    #     messages.each do |message|
+    #       yield message.value
+    #     end
+    #     sleep(0.25)
+    #   end
+    # end
 
     def bpop()
       opts = {host: 'localhost', port: 9092, topic: 'fission.events'}

@@ -67,41 +67,41 @@ namespace :events do
       req = Net::HTTP::Post.new(uri.request_uri, headers)
       req.body = "events=#{events.to_json}"
       res = http.request(req)
-      puts "Response #{res.code} #{res.message}: #{res.body}"
-      sleep(1.0)
+      # puts "Response #{res.code} #{res.message}: #{res.body}"
+      # sleep(1.0)
     end
 
   end
 
 
-  # desc "Check running Applications"
+  desc "Check running Applications"
+  task :consume => :environment do
+    Resque.enqueue(ConsumeEvents, {})
+  end
+
+  # desc "Consumes events"
   # task :consume => :environment do
-  #   Resque.enqueue(ConsumeEvents, {})
+  
+  #   event_queue = EventsQueue.new
+  #   event_queue.bpop() do |messages|
+  #     events = JSON.parse(messages, {symbolize_names: true})
+  #     events.each do |json_data|
+  #       Event.create(json_data)
+  #     end
+  #   end
+
   # end
 
-  desc "Consumes events"
-  task :consume => :environment do
-  
-    event_queue = EventsQueue.new
-    event_queue.bpop() do |messages|
-      events = JSON.parse(messages, {symbolize_names: true})
-      events.each do |json_data|
-        Event.create(json_data)
-      end
-    end
+  # desc "Produce events"
+  # task :produce => :environment do
+  #   qevents = EventsQueue.new
 
-  end
-
-  desc "Produce events"
-  task :produce => :environment do
-    qevents = EventsQueue.new
-
-    app = App.first
-    loop do
-      events = gen_events(app, app.clients.sample)
-      qevents.push(events.to_json)
-      sleep(1.0)
-    end
-  end
+  #   app = App.first
+  #   loop do
+  #     events = gen_events(app, app.clients.sample)
+  #     qevents.push(events.to_json)
+  #     sleep(1.0)
+  #   end
+  # end
 
 end
