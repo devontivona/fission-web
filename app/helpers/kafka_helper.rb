@@ -13,9 +13,10 @@ module KafkaHelper
     def push(message)        
       # @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
       # @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
-      opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
-      producer = Kafka::Producer.new(opts)
-      producer.push(Kafka::Message.new(message))
+      # opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
+      # producer = Kafka::Producer.new(Rails.application.config.kafka)
+
+      $kafka_producers.push(Kafka::Message.new(message))
       
     end
 
@@ -33,8 +34,7 @@ module KafkaHelper
     # end
 
     def bpop()
-      opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
-      consumer = Kafka::Consumer.new(opts)
+      consumer = Kafka::Consumer.new(Rails.application.config.kafka)
       consumer.loop do |messages|
         messages.each do |message|
           yield message.payload
@@ -48,9 +48,8 @@ module KafkaHelper
   class EventsQueue < DistQueue
 
     def initialize
-      @topic = 'fission.events'
-      @options = Rails.application.config.kafka
-      @options[:topic] = @topic
+      # @topic = 'fission.events'
+      # @options[:topic] = @topic
     end
 
   end

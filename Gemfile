@@ -49,6 +49,7 @@ gem 'kafka-rb'
 # gem 'poseidon'
 gem 'resque', require: 'resque/server'
 gem 'weighted_randomizer'
+gem 'connection_pool'
 
 
 # Use ActiveModel has_secure_password

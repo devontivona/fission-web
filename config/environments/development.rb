@@ -28,7 +28,7 @@ Fission::Application.configure do
   config.assets.debug = true
   
   # Kafka configuration
-  config.kafka = {url: 'localhost:9092'}
+  config.kafka = {host: 'localhost', port: 9092, topic: 'fission.events'}
 
   # Cassandra configuration
   config.cassandra = {hosts: ['localhost']}
