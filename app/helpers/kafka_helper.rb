@@ -47,10 +47,10 @@ module KafkaHelper
 
   class EventsQueue < DistQueue
 
-    def initialize
-      # @topic = 'fission.events'
-      # @options[:topic] = @topic
-    end
+    # def initialize
+    #   # @topic = 'fission.events'
+    #   # @options[:topic] = @topic
+    # end
 
   end
 end

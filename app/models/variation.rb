@@ -10,7 +10,7 @@
 #
 
 class Variation < ActiveRecord::Base
-  include CassandraHelper
+  # include CassandraHelper
 
   belongs_to :experiment
   has_many :assignments, dependent: :destroy 
