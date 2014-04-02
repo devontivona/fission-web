@@ -44,8 +44,10 @@ class Event
   end
 
 
-  # {day: 4, hour: 4, minute: 8}
+  # {day: 4, hour: 22, minute: 8, app_id: 1}
   def self.name_per_minute(params={})
+    
+
     query = {}
     query[:aggs] = {}
     query[:aggs][:name_per_minute] = {}
@@ -62,8 +64,32 @@ class Event
     query[:aggs][:name_per_minute][:aggs][:path] = {}
     query[:aggs][:name_per_minute][:aggs][:path] = { terms: {field: 'name'}}
 
-    puts query
+    puts query.to_json
+    @esc ||= Elasticsearch::Client.new
+    @esc.search(index: 'events', type: params[:app_id], body: query)
+  end
 
+  # {day: 4, hour: 22, minute: 8, app_id: 1}
+  def self.name_per_hour(params={})    
+
+    query = {}
+    query[:aggs] = {}
+    query[:aggs][:name_per_hour] = {}
+    query[:aggs][:name_per_hour][:filter] = {}
+    query[:aggs][:name_per_hour][:filter][:and] = []
+
+
+    query[:aggs][:name_per_hour][:filter][:and] << { term: {day: params[:day]} }
+    query[:aggs][:name_per_hour][:filter][:and] << { term: {hour: params[:hour]} }
+
+
+    query[:aggs][:name_per_hour][:aggs] = {}
+    query[:aggs][:name_per_hour][:aggs][:path] = {}
+    query[:aggs][:name_per_hour][:aggs][:path] = { terms: {field: 'name'}}
+
+    puts query.to_json
+    @esc ||= Elasticsearch::Client.new
+    @esc.search(index: 'events', type: params[:app_id], body: query)
   end
 
 
