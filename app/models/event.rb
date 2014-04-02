@@ -3,7 +3,6 @@
 # Table name: clients
 #
 #  app_id    :long
-#  client_id :long
 #  id        :timeuuid
 #  body      :text
 #
@@ -13,10 +12,7 @@ require 'elasticsearch'
 
 class Event
 
-  # Cassandra Variables
-  attr_accessor :id, :app_id, :experiment_id
-
-
+  attr_accessor :id, :app_id
   attr_accessor :app, :client
   attr_accessor :second, :minute, :hour, :day, :week, :month, :year
   attr_accessor :name, :status
@@ -89,7 +85,7 @@ class Event
 
     puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    @esc.search(index: 'events', type: params[:app_id], body: query)
+    @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
   end
 
 
@@ -99,22 +95,12 @@ class Event
     prepare() unless @statement and @esc
 
     payload = to_json()
-
-    if self.app.is_a?(Hash) and self.client.is_a?(Hash)
-      
-      app_id = self.app[:id]
-      client_id = self.client[:id]
-    else
-      app_id = self.app.id
-      client_id = self.client.id
-    end
-
-    @statement.execute(app_id, client_id, payload)
-    puts @esc.index(index: 'events', type: app_id, body: payload)
+    app_id  = (self.app.is_a?(Hash) and self.client.is_a?(Hash)) ? self.app[:id] : self.app.id
 
 
-    
-    
+    @statement.execute(app_id, payload)
+    puts @esc.index(index: Event.to_s.downcase, type: app_id, body: payload)
+
   end
 
   def to_json(*a)
@@ -133,9 +119,8 @@ class Event
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
         app_id,
-        client_id,
         body
-      ) VALUES (now(),?,?,?)}
+      ) VALUES (now(),?,?)}
     )
 
     @esc ||= Elasticsearch::Client.new
