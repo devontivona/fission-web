@@ -113,9 +113,9 @@ class Event
 
   def prepare()
     @options = Rails.application.config.cassandra
-    @cql = Cql::Client::connect(@options)
+    # @cql = Cql::Client::connect(@options)
 
-    @statement = @cql.prepare(
+    @statement = $cql.prepare(
       %{INSERT INTO #{keyspace()}.#{column_family()} ( 
         id,
         app_id,

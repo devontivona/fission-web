@@ -96,19 +96,19 @@ class VariationCount
 
   def connect()
     @options = Rails.application.config.cassandra
-    @client = Cql::Client::connect(@options)
+    # @client = Cql::Client::connect(@options)
 
-    @select_statement = @client.prepare(%{
+    @select_statement = $cql.prepare(%{
       SELECT app_id, experiment_id, variation_id, success_count, total_count 
         FROM #{keyspace()}.#{column_family()}
         WHERE app_id=? AND experiment_id=? AND variation_id=?
     })
-    @success_statement = @client.prepare(%{
+    @success_statement = $cql.prepare(%{
       UPDATE #{keyspace()}.#{column_family()}
         SET success_count = success_count + 1
         WHERE app_id=? AND experiment_id=? AND variation_id=?
     })
-    @statement = @client.prepare(%{
+    @statement = $cql.prepare(%{
       UPDATE #{keyspace()}.#{column_family()}
         SET total_count = total_count + 1
         WHERE app_id=? AND experiment_id=? AND variation_id=?
