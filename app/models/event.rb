@@ -19,8 +19,6 @@ class Event
   attr_accessor :server_timestamp, :client_timestamp
 
 
-
-
   def initialize(params={})
     params.each do |k,v|
       instance_variable_set("@#{k}", v) unless v.nil?
