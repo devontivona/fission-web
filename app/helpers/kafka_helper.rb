@@ -1,3 +1,5 @@
+require 'kafka'
+
 module KafkaHelper
 
   # To start Kafka with Topic "fission.events"
@@ -9,8 +11,11 @@ module KafkaHelper
   class DistQueue   
     
     def push(message)        
-      @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
-      @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
+      # @producer = Poseidon::Producer.new([@options[:url]], 'fission_producer') unless @producer
+      # @producer.send_messages([Poseidon::MessageToSend.new(@topic,message)])
+      opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
+      producer = Kafka::Producer.new(opts)
+      producer.push(Kafka::Message.new(message))
     end
 
     def bpop()
@@ -23,6 +28,16 @@ module KafkaHelper
           yield message.value
         end
         sleep(0.25)
+      end
+    end
+
+    def bpop()
+      opts = {host: 'localhost', port: 9092, topic: 'fission.events'}
+      consumer = Kafka::Consumer.new(opts)
+      consumer.loop do |messages|
+        messages.each do |message|
+          yield message.payload
+        end
       end
     end
 

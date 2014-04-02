@@ -46,7 +46,7 @@ gem 'inherited_resources'
 gem 'elasticsearch'
 gem 'cql-rb'
 gem 'kafka-rb'
-gem 'poseidon'
+# gem 'poseidon'
 gem 'resque', require: 'resque/server'
 gem 'weighted_randomizer'
 

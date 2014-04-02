@@ -98,7 +98,7 @@ namespace :events do
 
     app = App.first
     loop do
-      events = gen_events(app)
+      events = gen_events(app, app.clients.sample)
       qevents.push(events.to_json)
       sleep(1.0)
     end
