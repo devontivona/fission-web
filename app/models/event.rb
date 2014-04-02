@@ -110,7 +110,7 @@ class Event
     end
 
     @statement.execute(app_id, client_id, payload)
-    puts @esc.index(index: 'events', type: "#{app_id}-#{client_id}", body: payload)
+    puts @esc.index(index: 'events', type: app_id, body: payload)
 
 
     
