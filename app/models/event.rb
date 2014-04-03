@@ -1,11 +1,3 @@
-# == Schema Information
-#
-# Table name: clients
-#
-#  app_id    :long
-#  id        :timeuuid
-#  body      :text
-#
 require 'json'
 require 'elasticsearch'
 
@@ -63,7 +55,7 @@ class Event
     @esc.search(index: 'events', type: params[:app_id], body: query)
   end
 
-  # {day: 4, hour: 22, minute: 8, app_id: 1}
+  # {day: 4, hour: 22, app_id: 1}
   def self.name_per_hour(params={})    
 
     query = {}
@@ -72,7 +64,8 @@ class Event
     query[:aggs][:name_per_hour][:filter] = {}
     query[:aggs][:name_per_hour][:filter][:and] = []
 
-
+    query[:aggs][:name_per_hour][:filter][:and] << { term: {year: params[:year]} }
+    query[:aggs][:name_per_hour][:filter][:and] << { term: {month: params[:month]} }
     query[:aggs][:name_per_hour][:filter][:and] << { term: {day: params[:day]} }
     query[:aggs][:name_per_hour][:filter][:and] << { term: {hour: params[:hour]} }
 
@@ -83,7 +76,15 @@ class Event
 
     puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
+    result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
+
+    if result_set and result_set.has_key? 'aggregations'
+      total_docs = result_set['aggregations']['name_per_hour']['doc_count']
+      data = result_set['aggregations']['name_per_hour']['path']['buckets']
+      return total_docs, data
+    else
+      return 0, []
+    end
   end
 
 

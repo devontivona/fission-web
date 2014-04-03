@@ -1,4 +1,5 @@
 Fission::Application.routes.draw do
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -8,7 +9,11 @@ Fission::Application.routes.draw do
   resources :variations
   resources :clients
   resources :assignments
+  
+  get 'events/:year/:month/:day/:hour' => 'events#show', as: :show_events
   resources :events
+
+
   resources :experiments do
     member do
       get 'complete'
