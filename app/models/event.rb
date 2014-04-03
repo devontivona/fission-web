@@ -55,6 +55,40 @@ class Event
     @esc.search(index: 'events', type: params[:app_id], body: query)
   end
 
+
+  def self.name_per_day(params={})
+    
+
+    query = {}
+    query[:aggs] = {}
+    query[:aggs][:name_per_day] = {}
+    query[:aggs][:name_per_day][:filter] = {}
+    query[:aggs][:name_per_day][:filter][:and] = []
+
+
+    query[:aggs][:name_per_day][:filter][:and] << { term: {day: params[:day]} }
+
+
+    query[:aggs][:name_per_day][:aggs] = {}
+    query[:aggs][:name_per_day][:aggs][:path] = {}
+    query[:aggs][:name_per_day][:aggs][:path] = { terms: {field: 'name'}}
+
+    puts query.to_json
+    @esc ||= Elasticsearch::Client.new
+    result_set = @esc.search(index: 'events', type: params[:app_id], body: query)
+
+    if result_set and result_set.has_key? 'aggregations'
+      total_docs = result_set['aggregations']['name_per_day']['doc_count']
+      data = result_set['aggregations']['name_per_day']['path']['buckets']
+      return total_docs, data
+    else
+      return 0, []
+    end
+  end
+
+
+
+
   # {day: 4, hour: 22, app_id: 1}
   def self.name_per_hour(params={})    
 

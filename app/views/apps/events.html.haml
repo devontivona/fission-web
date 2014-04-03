@@ -1,0 +1,19 @@
+#experiments
+  %div
+    %span
+      %h3= "Events from #{@start} to #{@end}"
+      %h3= "Total Events: #{@total_count}"
+    %div
+      - if @event_aggs.empty?
+        %hr
+        %h3{ :style => "text-align:center" } No events collected
+      - else
+        %table
+          / %tbody
+          /   %tr
+          /     %th Event Name
+          /     %th Counts
+          /     %tr 
+          /       - @event_aggs.each do |event|
+          /       %td= event['key']
+          /       %td= event['doc_count']
