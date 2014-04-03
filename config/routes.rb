@@ -5,12 +5,16 @@ Fission::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'apps#index'
-  resources :apps
+  resources :apps do
+    member do
+      get 'events'
+    end
+  end
   resources :variations
   resources :clients
   resources :assignments
   
-  get 'events/:year/:month/:day/:hour' => 'events#show', as: :show_events
+  get 'apps/:app_id/events/:year/:month/:day/:hour' => 'events#show', as: :show_events
   resources :events
 
 
