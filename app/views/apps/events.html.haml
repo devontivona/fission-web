@@ -9,11 +9,11 @@
         %h3{ :style => "text-align:center" } No events collected
       - else
         %table
-          / %tbody
-          /   %tr
-          /     %th Event Name
-          /     %th Counts
-          /     %tr 
-          /       - @event_aggs.each do |event|
-          /       %td= event['key']
-          /       %td= event['doc_count']
+          %tbody
+            %tr
+              %th Event Name
+              %th Occurrence
+            / - @event_aggs.each do |event|
+            /   %tr
+            /     %td= event['key']
+            /     %td= event['doc_count']

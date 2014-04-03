@@ -66,6 +66,8 @@ class Event
     query[:aggs][:name_per_day][:filter][:and] = []
 
 
+    query[:aggs][:name_per_day][:filter][:and] << { term: {year: params[:year]} }
+    query[:aggs][:name_per_day][:filter][:and] << { term: {month: params[:month]} }
     query[:aggs][:name_per_day][:filter][:and] << { term: {day: params[:day]} }
 
 
