@@ -6,7 +6,7 @@
         %th Access Token
         %th Actions
       - @apps.each do |app|
-        %tr
+        %tr{ data: { target: app_path(app) }}
           %td= app.name
           %td= app.access_token
           %td= link_to "Delete", app_path(app), method: :delete
