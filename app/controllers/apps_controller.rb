@@ -17,14 +17,11 @@ class AppsController < InheritedResources::Base
   end
 
   def metrics
-    Rails.logger.info params.has_key?(:end_date)
     @end = params.has_key?(:end_date) ? Time.strptime(params[:end_date], "%m/%d/%Y").getutc.to_date : Time.now.getutc.to_date
     @start = params.has_key?(:start_date) ? Time.strptime(params[:start_date], "%m/%d/%Y").getutc.to_date : Time.now.getutc.to_date
-    # @start = Time.mktime( @end.year, @end.month, 1).to_date
-    @current_app = App.find params[:id]
 
+    @current_app = App.find params[:id]
     @total_count, @event_aggs = get_bucket_metrics(params[:id], @start, @end)
-    Rails.logger.info "Found events #{@event_aggs.inspect}"
 
     respond_to do |format|
       format.html { render partial: 'metrics' }
