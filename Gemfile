@@ -39,6 +39,7 @@ gem 'huxley'
 gem 'simple_form'
 gem 'haml-rails'
 gem 'inherited_resources'
+gem 'jquery-ui-rails'
 
 
 # gem 'cequel'

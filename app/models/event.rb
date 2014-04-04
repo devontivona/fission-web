@@ -52,7 +52,7 @@ class Event
 
     puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    @esc.search(index: 'events', type: params[:app_id], body: query)
+    @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
   end
 
 
@@ -77,7 +77,7 @@ class Event
 
     puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    result_set = @esc.search(index: 'events', type: params[:app_id], body: query)
+    result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
 
     if result_set and result_set.has_key? 'aggregations'
       total_docs = result_set['aggregations']['name_per_day']['doc_count']

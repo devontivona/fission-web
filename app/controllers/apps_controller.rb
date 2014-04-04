@@ -14,16 +14,7 @@ class AppsController < InheritedResources::Base
       total_count, aggs = Event.name_per_day({year: date.year, month: date.month, day: date.day, app_id: current_app})
       @total_count += total_count
       aggs.each do |hash|
-        # hash.each do |key, count|
-          # Rails.logger.info key
-          Rails.logger.info "#{hash}"
-          if @event_aggs.has_key? hash['key']
-            @event_aggs[hash['key']] += hash['doc_count']
-          else
-            @event_aggs[hash['key']] = hash['doc_count']
-          end
-          # Rails.logger.info @events_aggs.inspect
-        # end
+        @event_aggs[hash['key']] = @event_aggs.has_key?(hash['key']) ? (@event_aggs[hash['key']]+hash['doc_count']) : hash['doc_count']
       end
     end
 

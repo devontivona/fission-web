@@ -1,9 +1,19 @@
+%link{:rel => :stylesheet, :type => :"text/css", :href => "//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"}
+%script{ :src => '//code.jquery.com/jquery-1.9.1.js', :type => 'text/javascript', :charset => 'utf-8' }
+%script{ :src => '//code.jquery.com/ui/1.10.4/jquery-ui.js', :type => 'text/javascript', :charset => 'utf-8' }
 #experiments
   %div
     %span
-      %h3= "Events from #{@start} to #{@end}"
       %h3= "Total Events: #{@total_count}"
+      %span.left
+        = label_tag :start_date
+        %input#start_date{:type=>"input"}
+      %span.right
+        = label_tag :end_date
+        %input#end_date{:type=>"input"}
     %div
+      %br
+      %br
       - if @event_aggs.empty?
         %hr
         %h3{ :style => "text-align:center" } No events collected
@@ -13,7 +23,15 @@
             %tr
               %th Event Name
               %th Occurrence
-            / - @event_aggs.each do |event|
-            /   %tr
-            /     %td= event['key']
-            /     %td= event['doc_count']
+            - @event_aggs.each do |name,count|
+              %tr
+                %td= name
+                %td= count
+
+:javascript
+  $(document).ready( function() {
+    $( "#start_date" ).datepicker();
+    $( "#end_date" ).datepicker();
+    $( "#start_date" ).datepicker("setDate", "#{@start.strftime("%m/%d/%Y")}" );
+    $( "#end_date" ).datepicker("setDate", "#{@end.strftime("%m/%d/%Y")}");
+  });
