@@ -1,6 +1,4 @@
-%link{:rel => :stylesheet, :type => :"text/css", :href => "//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css"}
-%script{ :src => '//code.jquery.com/jquery-1.9.1.js', :type => 'text/javascript', :charset => 'utf-8' }
-%script{ :src => '//code.jquery.com/ui/1.10.4/jquery-ui.js', :type => 'text/javascript', :charset => 'utf-8' }
+
 #experiments
   %div
     %span
@@ -27,11 +25,28 @@
               %tr
                 %td= name
                 %td= count
-
+%script{ :src => '//code.jquery.com/jquery-1.9.1.js', :type => 'text/javascript', :charset => 'utf-8' }
 :javascript
   $(document).ready( function() {
-    $( "#start_date" ).datepicker();
-    $( "#end_date" ).datepicker();
+
+    / var onStartDateSelect = function(dateText){
+    /   console.log("Selected "+dateText);
+    / };
+    / var onEndDateSelect = function(dateText){
+    /   console.log("Selected "+dateText);
+    /   var dateItems =  dateText.split('/');
+    /   var date = new Date(dateItems[2], dateItems[0], dateItems[1]);
+    /   console.log(date);
+    /   $( "#start_date" ).datepicker({ maxDate: date });
+    /   return true;
+    / };
+
+    $( "#start_date" ).datepicker({onSelect: onStartDateSelect});
+    $( "#end_date" ).datepicker({onSelect: onEndDateSelect, maxDate: new Date() });
     $( "#start_date" ).datepicker("setDate", "#{@start.strftime("%m/%d/%Y")}" );
     $( "#end_date" ).datepicker("setDate", "#{@end.strftime("%m/%d/%Y")}");
+
+    
+
   });
+

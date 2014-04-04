@@ -2,8 +2,7 @@ class AppsController < InheritedResources::Base
   respond_to :html, :json
   actions :all, except: [:show]
 
-  def events
-
+  def show
     @end = Time.now.getutc.to_date
     @start = Time.mktime( @end.year, @end.month, 1).to_date
     Rails.logger.info "From Start: #{@start} - End: #{@end}"
