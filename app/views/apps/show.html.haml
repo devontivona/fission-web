@@ -29,24 +29,31 @@
 :javascript
   $(document).ready( function() {
 
-    / var onStartDateSelect = function(dateText){
-    /   console.log("Selected "+dateText);
-    / };
-    / var onEndDateSelect = function(dateText){
-    /   console.log("Selected "+dateText);
-    /   var dateItems =  dateText.split('/');
-    /   var date = new Date(dateItems[2], dateItems[0], dateItems[1]);
-    /   console.log(date);
-    /   $( "#start_date" ).datepicker({ maxDate: date });
-    /   return true;
-    / };
 
-    $( "#start_date" ).datepicker({onSelect: onStartDateSelect});
-    $( "#end_date" ).datepicker({onSelect: onEndDateSelect, maxDate: new Date() });
+    var onSelectDate = function(){
+      var start = $( "#start_date" ).val();
+      var end   = $( "#end_date" ).val();
+
+      console.log("Start: "+start +" End: "+end);
+
+    }
+
+    $( "#start_date" ).datepicker({
+      onSelect: onSelectDate,
+      onClose: function(selectedDate) {
+        $( "#end_date" ).datepicker("option", "minDate", selectedDate);
+      }
+    });
+    $( "#end_date" ).datepicker({ 
+      maxDate: new Date(),
+      onSelect: onSelectDate,
+      onClose: function(selectedDate) {
+        $( "#start_date" ).datepicker("option", "maxDate", selectedDate);
+      }
+
+    });
     $( "#start_date" ).datepicker("setDate", "#{@start.strftime("%m/%d/%Y")}" );
-    $( "#end_date" ).datepicker("setDate", "#{@end.strftime("%m/%d/%Y")}");
-
-    
+    $( "#end_date" ).datepicker("setDate", "#{@end.strftime("%m/%d/%Y")}");    
 
   });
 
