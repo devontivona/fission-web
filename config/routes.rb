@@ -5,7 +5,11 @@ Fission::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'apps#index'
-  resources :apps
+  resources :apps do 
+    member do
+      post 'metrics'
+    end
+  end
   resources :variations
   resources :clients
   resources :assignments

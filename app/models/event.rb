@@ -50,7 +50,7 @@ class Event
     query[:aggs][:name_per_minute][:aggs][:path] = {}
     query[:aggs][:name_per_minute][:aggs][:path] = { terms: {field: 'name'}}
 
-    puts query.to_json
+    # puts query.to_json
     @esc ||= Elasticsearch::Client.new
     @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
   end
@@ -75,7 +75,7 @@ class Event
     query[:aggs][:name_per_day][:aggs][:path] = {}
     query[:aggs][:name_per_day][:aggs][:path] = { terms: {field: 'name'}}
 
-    puts query.to_json
+    # puts query.to_json
     @esc ||= Elasticsearch::Client.new
     result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
 
@@ -110,7 +110,7 @@ class Event
     query[:aggs][:name_per_hour][:aggs][:path] = {}
     query[:aggs][:name_per_hour][:aggs][:path] = { terms: {field: 'name'}}
 
-    puts query.to_json
+    # puts query.to_json
     @esc ||= Elasticsearch::Client.new
     result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
 
