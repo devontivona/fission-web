@@ -28,10 +28,10 @@ Fission::Application.configure do
   config.assets.debug = true
   
   # Kafka configuration
-  config.kafka = {host: 'localhost', port: 9092, topic: 'fission.events'}
+  config.kafka = {host: ENV['KAFKA_HOST'], port: 9092, topic: 'fission.events'}
 
   # Cassandra configuration
-  config.cassandra = {hosts: ['localhost']}
+  config.cassandra = {hosts: [ENV['CASSANDRA_HOST']]}
 
   # Redis configuration
   config.redis = {host: 'localhost', port: 6379, thread_safe: true}
