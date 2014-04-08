@@ -53,13 +53,13 @@ class Event
     # puts query.to_json
     @esc ||= Elasticsearch::Client.new
 
-    begin
+    # begin
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
-    catch Elasticsearch::Transport::Transport::Errors::NotFound
-      result_set = None
-    catch Exception
-      result_set = None
-    end
+    # catch Elasticsearch::Transport::Transport::Errors::NotFound
+    #   result_set = None
+    # catch Exception
+    #   result_set = None
+    # end
     
   end
 
@@ -85,13 +85,13 @@ class Event
 
     # puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    begin
+    # begin
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
-    catch Elasticsearch::Transport::Transport::Errors::NotFound
-      result_set = None
-    catch Exception
-      result_set = None
-    end
+    # catch Elasticsearch::Transport::Transport::Errors::NotFound
+    #   result_set = None
+    # catch Exception
+    #   result_set = None
+    # end
 
     if result_set and result_set.has_key? 'aggregations'
       total_docs = result_set['aggregations']['name_per_day']['doc_count']
@@ -126,13 +126,13 @@ class Event
 
     # puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    begin
+    # begin
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
-    catch Elasticsearch::Transport::Transport::Errors::NotFound
-      result_set = None
-    catch Exception
-      result_set = None
-    end
+    # catch Elasticsearch::Transport::Transport::Errors::NotFound
+    #   result_set = None
+    # catch Exception
+    #   result_set = None
+    # end
 
 
     if result_set and result_set.has_key? 'aggregations'
