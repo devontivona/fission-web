@@ -55,7 +55,9 @@ namespace :events do
   task :generate => :environment do
 
     app = App.first
-    uri = URI.parse('http://localhost:3000/events')
+    endpoint = "http://#{ENV['HOST_ADDRESS']}:#{ENV['PORT']}/events"
+    puts endpoint
+    uri = URI.parse(endpoint)
 
     headers = {'Access-Token'=>app.access_token}
     loop do
