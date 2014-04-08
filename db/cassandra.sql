@@ -4,7 +4,7 @@ CREATE KEYSPACE fission_dev
 
 USE fission_dev;
 
-Triggered by client side
+-- Triggered by client side
 CREATE TABLE variation_count(
   app_id BIGINT,
   experiment_id BIGINT,
