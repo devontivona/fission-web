@@ -52,7 +52,13 @@ class Event
 
     # puts query.to_json
     @esc ||= Elasticsearch::Client.new
-    @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
+
+    begin
+      @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
+    catch Elasticsearch::Transport::Transport::Errors::NotFound
+      return []
+    end
+    
   end
 
 
