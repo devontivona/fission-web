@@ -57,6 +57,8 @@ class Event
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
     catch Elasticsearch::Transport::Transport::Errors::NotFound
       result_set = None
+    catch Exception
+      result_set = None
     end
     
   end
@@ -86,6 +88,8 @@ class Event
     begin
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
     catch Elasticsearch::Transport::Transport::Errors::NotFound
+      result_set = None
+    catch Exception
       result_set = None
     end
 
@@ -125,6 +129,8 @@ class Event
     begin
       result_set = @esc.search(index: Event.to_s.downcase, type: params[:app_id], body: query)
     catch Elasticsearch::Transport::Transport::Errors::NotFound
+      result_set = None
+    catch Exception
       result_set = None
     end
 
