@@ -22,5 +22,7 @@ module Fission
     
     # Use SAAS as the preferred syntax in stylesheets
     config.sass.preferred_syntax = :sass
+
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end

@@ -1,0 +1,14 @@
+- if @event_aggs.empty?
+  %hr
+  %h3{ :style => "text-align:center" } No events collected
+- else
+  %h3{ style: "text-align:center" }= "Total Events: #{@total_count}"
+  %table
+    %tbody
+      %tr
+        %th Event Name
+        %th Occurrence
+      - @event_aggs.each do |name,count|
+        %tr
+          %td= name
+          %td= count

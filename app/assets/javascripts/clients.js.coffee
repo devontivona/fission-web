@@ -7,3 +7,6 @@ $ ->
   ), ->
     $(this).parents("tr").click ->
       Turbolinks.visit $(this).attr("data-target")
+  
+  $('td[data-target]').click ->
+    window.location = $(this).attr('data-target')

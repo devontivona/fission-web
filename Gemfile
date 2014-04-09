@@ -39,6 +39,19 @@ gem 'huxley'
 gem 'simple_form'
 gem 'haml-rails'
 gem 'inherited_resources'
+gem 'jquery-ui-rails'
+
+
+# gem 'cequel'
+# gem 'cassandra'
+gem 'elasticsearch'
+gem 'cql-rb'
+gem 'kafka-rb'
+# gem 'poseidon'
+gem 'resque', require: 'resque/server'
+gem 'weighted_randomizer'
+gem 'connection_pool'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'

@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require jquery.ui.datepicker
  *= require_tree .
  */
 
@@ -57,8 +58,20 @@ table
       left: $rhythm
       right: $rhythm
 
+.right
+  float: right
+.left
+  float: left
+
 table 
   tr[data-target]:hover
     td
       background: rgba(0, 0, 0, 0.05)
       color: inherit
+
+table 
+  tr
+    td[data-target]:hover
+      background: rgba(0, 0, 0, 0.05)
+      color: inherit
+      cursor: pointer

@@ -24,6 +24,23 @@ class ExperimentsController < InheritedResources::Base
     end
   end
 
+  def show
+    @experiment = Experiment.find params[:id]
+  end
+
+  def complete
+    @experiment = Experiment.find params[:id]
+
+    outcome = ABTest.complete(@experiment.variations,@experiment.outcome)
+    if outcome
+      @experiment.outcome = outcome
+      @experiment.is_active = false
+      @experiment.save
+    end
+
+    redirect_to @experiment
+  end
+
   def create
     @experiment = current_app.experiments.build permitted_params
     create! do |success, failure|

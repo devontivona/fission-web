@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :null_session
+  include KafkaHelper
 
 private
 
@@ -11,6 +12,10 @@ private
 
   def current_client
     @client ||= Client.find_by_app_id_and_token current_app.id, request.headers["Client-Token"]
+  end
+
+  def events_queue
+    @events_queue ||= EventsQueue.new
   end
 
   def restrict_access

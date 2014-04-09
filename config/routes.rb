@@ -1,14 +1,31 @@
 Fission::Application.routes.draw do
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
   root 'apps#index'
-  resources :apps
-  resources :experiments
+  resources :apps do 
+    member do
+      post 'metrics'
+    end
+  end
   resources :variations
   resources :clients
   resources :assignments
+  
+  get 'apps/:app_id/events/:year/:month/:day/:hour' => 'events#show', as: :show_events
+  resources :events
+
+
+  resources :experiments do
+    member do
+      get 'complete'
+    end
+  end
+
+  mount Resque::Server, :at => "/resque"
+
   
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

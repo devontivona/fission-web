@@ -2,3 +2,7 @@ development:
   adapter: postgresql
   encoding: unicode
   database: fission_development
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: fission_prod

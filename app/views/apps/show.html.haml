@@ -1,0 +1,60 @@
+
+#experiments
+  %div
+    %span
+      %span.left
+        = label_tag :start_date
+        %input#start_date{:type=>"input"}
+      %span.right
+        = label_tag :end_date
+        %input#end_date{:type=>"input"}
+    %div
+      %br
+      %br
+      %div#metrics
+        = render partial: 'metrics'
+
+
+%script{ :src => '//code.jquery.com/jquery-1.9.1.js', :type => 'text/javascript', :charset => 'utf-8' }
+:javascript
+  $(document).ready( function() {
+
+
+    var onSelectDate = function(){
+      var startDate = $( "#start_date" ).val();
+      var endDate   = $( "#end_date" ).val();
+
+      console.log("Start: "+startDate +" End: "+endDate);
+      $.ajax({
+        url: "#{metrics_app_path(@current_app)}",
+        type: "POST",
+        data: { start_date : startDate, end_date: endDate },
+
+      }).done(function(response) {
+        console.log(response);
+        $( "#metrics" ).html(response);
+      });
+
+    }
+
+    $( "#start_date" ).datepicker({
+      maxDate: new Date(),
+      onSelect: onSelectDate,
+      onClose: function(selectedDate) {
+        $( "#end_date" ).datepicker("option", "minDate", selectedDate);
+        
+      }
+    });
+    $( "#end_date" ).datepicker({ 
+      maxDate: new Date(),
+      onSelect: onSelectDate,
+      onClose: function(selectedDate) {
+        $( "#start_date" ).datepicker("option", "maxDate", selectedDate);
+      }
+
+    });
+    $( "#start_date" ).datepicker("setDate", "#{@start.strftime("%m/%d/%Y")}" );
+    $( "#end_date" ).datepicker("setDate", "#{@end.strftime("%m/%d/%Y")}");    
+
+  });
+

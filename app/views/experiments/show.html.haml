@@ -1,12 +1,64 @@
 #experiments
   %div
-    %h2= @experiment.name
+    %span
+      %span.left
+        %h2= @experiment.name
+      - if @experiment.is_active 
+        %span.right
+          = link_to "Complete Experiment", complete_experiment_path(@experiment), class: :button
+      - else
+        %span.right
+          = link_to "Completed", experiment_path(@experiment), class: :button
+
     %table
       %tbody
         %tr
           %th Variation
-          %th Clients
+          %th Participants
+          %th Conversions
+          %th Conversion Rate
         - @experiment.variations.each do |variation|
           %tr{ data: { target: variation_path(variation) }}
             %td= variation.name
-            %td= variation.clients.count
+            %td= variation.participants
+            %td= variation.converted
+            %td= variation.measure.round(4)
+  %hr
+  %div
+    %table
+      %tbody
+        %tr
+          %th Current Best
+          %th Current Base
+          %th Current Worst
+          %th Outcome/Winner
+          %tr
+            - if @experiment.best
+              %td{ data: { target: variation_path(@experiment.best) }}
+                = @experiment.best.name
+            - else
+              %td
+                N/A
+            - if @experiment.base
+              %td{ data: { target: variation_path(@experiment.base) }}
+                = @experiment.base.name
+            - else
+              %td
+                N/A
+            - if @experiment.worst
+              %td{ data: { target: variation_path(@experiment.worst) }}
+                = @experiment.worst.name
+            - else
+              %td
+                N/A
+            - if @experiment.outcome
+              %td{ data: { target: variation_path(@experiment.outcome) }}
+                = @experiment.outcome.name
+            - else
+              %td
+                N/A
+
+
+
+
+
